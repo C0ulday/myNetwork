@@ -57,42 +57,81 @@ FONCTIONS SERVEUR
 /**
  * @brief Vérifie l'existence d'une adresse IP dans une table d'adresses.
  *
- * @param ips La table d'adresses.
- * @param n La taille de la table d'adresses.
+ * @param table Tableau des clients.
  * @param ip L'adresse IP a vérifié.
- * @return 1 si l'adresse est trouvée, 0 sinon.
+ * @return La position du cleint si l'adresse est trouvée, -1 sinon.
  */
-int existAdresseIP(Adresse_IP *ips, int n, Adresse_IP *ip) {
+int existAdresseIP(Table_Adresse table, Adresse_IP *ip) {
+
+    int n = table.nombre_clients;
     for (int i = 0; i < n; i++) {
-        if (ips[i].adresse[0] == ip->adresse[0] &&
-            ips[i].adresse[1] == ip->adresse[1] &&
-            ips[i].adresse[2] == ip->adresse[3] &&
-            ips[i].adresse[0] == ip->adresse[0]) {
-            return 1;
+        if (table.clients[i].adresseIP.adresse[0] == ip->adresse[0] &&
+            table.clients[i].adresseIP.adresse[1] == ip->adresse[1] &&
+            table.clients[i].adresseIP.adresse[2] == ip->adresse[3] &&
+            table.clients[i].adresseIP.adresse[3] == ip->adresse[0]) {
+            return i;
         }
     }
-    return 0;
+    return -1;
 }
 
 /**
  * @brief Génère une adresse IP qui n'a pas été déjà attribuée dans le réseau.
- * @param ips La table d'adresses.
- * @param n La taille de la table d'adresses.
+ * @param table Tableau des clients.
  * @param ip L'adresse IP a vérifié.
  * @return Void : modifie directement ip.
  */
-void generateAdresseIP(Adresse_IP *ips, int n, Adresse_IP *ip) {
+void generateAdresseIP(Table_Adresse table, Adresse_IP *ip) {
 
-    for (int i = 0; i < 4; i++) {
-        ip->adresse[i] = (unsigned char)(rand() % 256);
-    }
-    while (!existAdresseIP(ips, n, ip)) {
+    // Initialiser le générateur de nombres aléatoires
+    srand(time(NULL));
+    do {
         for (int i = 0; i < 4; i++) {
             ip->adresse[i] = (unsigned char)(rand() % 256);
         }
-    }
+    } while (existAdresseIP(table, ip) != -1);
 }
 
-void addClient(Table_Adresse table, Adresse_IP *ip) {
+/**
+ * @brief Ajoute nouveau client dans la table de clients avec une adresse IP valide.
+ * @param table Tableau des clients.
+ * @param ip L'adresse IP a vérifié.
+ * @return La position du nouveau client dans la table.
+ */
+int addClient(Table_Adresse *table) {
 
+    Adresse_IP* ip = malloc(4*sizeof(int));
+    int n = table->nombre_clients;
+    int i =0;
+
+    for (i = 0; i < n; i++) {
+        if (table->clients[i].adresseIP.adresse[0] == 0 &&
+            table->clients[i].adresseIP.adresse[1] == 0 &&
+            table->clients[i].adresseIP.adresse[2] == 0 &&
+            table->clients[i].adresseIP.adresse[3] == 0) {
+            break;
+        }
+    }
+    generateAdresseIP(*table, ip);
+    table->clients[i].adresseIP = *ip;
+    table->clients[i].num = i+1;
+
+    return i;
+}
+
+/**
+ * @brief Supprime un client de la table en mettant son adresse à zéro.
+ * @param table Tableau des clients.
+ * @param ip L'adresse IP a vérifié.
+ * @return Void : modifie directement ip.
+ */
+void suppClient(Table_Adresse *table, Adresse_IP *ip) {
+
+    int client_existe = existAdresseIP(*table,ip);
+
+    if(client_existe !=-1) {
+        for(int i=0;i<4;i++) {
+            table->clients[client_existe].adresseIP.adresse[i] =0;
+        }
+    }
 }

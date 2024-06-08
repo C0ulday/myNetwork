@@ -22,18 +22,12 @@ int main(void)
 {
 
     /*===================================================
-    INITIALISATION MENU
-    ===================================================*/
-    printf("SERVEUR - Menu Principal"\n);
-    printf("--------------------------------------------------"\n);
-
-    /*===================================================
     CHOIX UTILISATEUR MENU
     ===================================================*/
 
-    key_t cle_admin = 1;
-    int file_id  msgget(cle_admin,IPC_CREAT |0666);
-    Table_Adresse table_adresse;
+    key_t cle_admin = ftok("cle.txt",1);
+    int file_id = msgget(cle_admin,0666);
+    Table_Adresse table;
 
     if(file_id ==-1) {
         perror("msgget");
@@ -41,12 +35,36 @@ int main(void)
     }
 
     while (1) {
-        
+
+        /*LANCEMENT SERVEUR*/
+        if(msgrcv(file_id,&table,sizeof(table) - sizeof(long),1,0) == -1) {
+            perror("msgrcv");
+            exit(EXIT_FAILURE);
+        }
+        if(table.type ==1) {
+            /*===================================================
+            INITIALISATION MENU
+            ===================================================*/
+            printf("SERVEUR - Menu Principal\n");
+            printf("--------------------------------------------------\n");
+            printf("En attente de requêtes...\n");
+        }
+
         /*AJOUT CLIENT - ATTRIBUTION ADRESSE IP*/
         // Type 2 = ajout de client
-        if(msgrcv(file_id,&table_adresse,2,0) == -1) {
+        if(msgrcv(file_id,&table,sizeof(table) - sizeof(long),2,0) == -1) {
             perror("msgrcv");
+            exit(EXIT_FAILURE);
         }
+        if(table.type ==2) {
+            int index_client = addClient(&table);
+            printf("( + ) Client %d : %u.%u.%u.%u\n",table.clients[index_client].num,table.clients[index_client].adresseIP.adresse[0],
+            table.clients[index_client].adresseIP.adresse[1],
+            table.clients[index_client].adresseIP.adresse[2],
+            table.clients[index_client].adresseIP.adresse[3]);
+        }
+        
+
 
     }
 

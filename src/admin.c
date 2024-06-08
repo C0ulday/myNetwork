@@ -22,7 +22,7 @@
  * d'arrêter des clients dynamiquement.
  */
 
-#define NOMBRE_CLIENTS_MAX 3;
+#define NOMBRE_CLIENTS_MAX 3
 
 int main(void) {
 
@@ -62,46 +62,54 @@ int main(void) {
             fgets(buffer, sizeof(buffer), stdin);
         }
 
-        Table_Adresse table_adresse;
-        table_adresse.clients = malloc(NOMBRE_CLIENTS_MAX * sizeof(Client));
-        for(int i=0;i<NOMBRE_CLIENTS_MAX;i++) {
-            table_adresse.clients->adresse = malloc(4 * sizeof(unsigned char));
+        // Initilisation de la table des clients
+        Table_Adresse table;
+        table.clients = malloc(NOMBRE_CLIENTS_MAX * sizeof(Client));
+        table.nombre_clients = 0;
+
+        if (table.clients == NULL) {
+            perror("Allocation mémoire");
+            exit(EXIT_FAILURE);
         }
-        
-        
-        // Création d'une file de message
-        key_t cle_serveur = 1;
-        int file_id  msgget(cle_serveur,IPC_CREAT |0666);
 
-        int nombre_clients =0;
+        for (int i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
+            for (int j = 0; j < 4; j++) {
+                table.clients[i].adresseIP.adresse[j] = 0;
+            }
+        }
 
-        if(file_id ==-1) {
+        // Création de la file de message Admin - Serveur
+        key_t cle_serveur = ftok("cle.txt", 1);
+        int file_id = msgget(cle_serveur, IPC_CREAT | 0666);
+        if (file_id == -1) {
             perror("mssget");
-            exit(EXIT_FAILURE); 
+            exit(EXIT_FAILURE);
         }
+        printf("%d", file_id);
 
         switch (reponse_user) {
 
         case 1:
 
             // Lancement d'un terminal externe avec une instance de serveur
-            system("xterm -title SERVEUR 'xterm -e ./sevreur &");
-
+            // Type 1 = message normal
+            table.type = 1;
+            if (msgsnd(file_id, &table, sizeof(table) - sizeof(long), 0)) {
+                perror("msgsnd");
+                exit(EXIT_FAILURE);
+            }
             break;
         case 2:
             /*NOUVEAU CLIENT*/
             printf("Création d'un nouveau client...\n");
-            nombre_clients++;
-            sleep(3);
             // Envoie au serveur du nouveau client
             // Type 2 = ajout de client
-            table_adresse.type =2;
-            table_adresse.nombre_clients = nombre_clients;
-            if(msgsnd(file_id,&table_adresse,sizeof(table_adresse.ips),0)) {
+            table.type = 2;
+            table.nombre_clients++;
+            if (msgsnd(file_id, &table, sizeof(table) - sizeof(long), 0)) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
-            
 
             break;
         case 3:
@@ -112,6 +120,7 @@ int main(void) {
             printf("A bientôt !");
             exit(EXIT_SUCCESS);
         }
+        free(table.clients);
     }
 
     return 0;
