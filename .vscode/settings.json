@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "types.h": "c",
+        "fonctions.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "signal.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
