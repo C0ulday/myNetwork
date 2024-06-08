@@ -57,16 +57,17 @@ FONCTIONS SERVEUR
  * @brief Initialise une table de clients.
  *
  * @param table L'adresse de la table.
- * @param nombre_clients_max Le nombre de clients que contiendra la table de clients.
+ * @param nombre_clients_max Le nombre de clients que contiendra la table de
+ * clients.
  */
-void initializeTableClients(Table_Adresse* table, int nombre_clients_max) {
+void initializeTableClients(Table_Adresse *table, int nombre_clients_max) {
 
     if (table == NULL) {
         perror("table is NULL");
         exit(EXIT_FAILURE);
     }
 
-    table->type = 0;  // Initialisation de type, ajuster selon vos besoins
+    table->type = 0; // Initialisation de type, ajuster selon vos besoins
     table->nombre_clients = 0;
     table->clients = (Client *)malloc(nombre_clients_max * sizeof(Client));
     if (table->clients == NULL) {
@@ -76,7 +77,8 @@ void initializeTableClients(Table_Adresse* table, int nombre_clients_max) {
 
     // Initialiser les adresses IP des clients à 0
     for (int i = 0; i < nombre_clients_max; i++) {
-        memset(table->clients[i].adresseIP.adresse, 0, sizeof(table->clients[i].adresseIP.adresse));
+        memset(table->clients[i].adresseIP.adresse, 0,
+               sizeof(table->clients[i].adresseIP.adresse));
         table->clients[i].num = 0;
     }
 }
@@ -120,7 +122,8 @@ void generateAdresseIP(Table_Adresse table, Adresse_IP *ip) {
 }
 
 /**
- * @brief Ajoute nouveau client dans la table de clients avec une adresse IP valide.
+ * @brief Ajoute nouveau client dans la table de clients avec une adresse IP
+ * valide.
  * @param table Tableau des clients.
  * @param ip L'adresse IP a vérifié.
  * @return La position du nouveau client dans la table.
@@ -129,7 +132,7 @@ int addClient(Table_Adresse *table) {
 
     Adresse_IP ip;
     int n = table->nombre_clients;
-    int i =0;
+    int i = 0;
 
     for (i = 0; i < n; i++) {
         if (table->clients[i].adresseIP.adresse[0] == 0 &&
@@ -141,7 +144,7 @@ int addClient(Table_Adresse *table) {
     }
     generateAdresseIP(*table, &ip);
     table->clients[i].adresseIP = ip;
-    table->clients[i].num = i+1;
+    table->clients[i].num = i + 1;
 
     return i;
 }
@@ -154,12 +157,11 @@ int addClient(Table_Adresse *table) {
  */
 void suppClient(Table_Adresse *table, Adresse_IP *ip) {
 
-    int client_existe = existAdresseIP(*table,ip);
+    int client_existe = existAdresseIP(*table, ip);
 
-    if(client_existe !=-1) {
-        for(int i=0;i<4;i++) {
-            table->clients[client_existe].adresseIP.adresse[i] =0;
+    if (client_existe != -1) {
+        for (int i = 0; i < 4; i++) {
+            table->clients[client_existe].adresseIP.adresse[i] = 0;
         }
     }
 }
-
