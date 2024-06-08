@@ -6,6 +6,7 @@
  * @brief contient les constantes et structures définies.
  */
 
+#define NOMBRE_CLIENTS_MAX 3
 typedef struct {
     unsigned char adresse[4];
 } Adresse_IP;

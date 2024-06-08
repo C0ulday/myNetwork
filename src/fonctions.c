@@ -68,7 +68,7 @@ int existAdresseIP(Table_Adresse table, Adresse_IP *ip) {
         if (table.clients[i].adresseIP.adresse[0] == ip->adresse[0] &&
             table.clients[i].adresseIP.adresse[1] == ip->adresse[1] &&
             table.clients[i].adresseIP.adresse[2] == ip->adresse[3] &&
-            table.clients[i].adresseIP.adresse[3] == ip->adresse[0]) {
+            table.clients[i].adresseIP.adresse[3] == ip->adresse[3]) {
             return i;
         }
     }
@@ -100,7 +100,7 @@ void generateAdresseIP(Table_Adresse table, Adresse_IP *ip) {
  */
 int addClient(Table_Adresse *table) {
 
-    Adresse_IP* ip = malloc(4*sizeof(int));
+    Adresse_IP ip;
     int n = table->nombre_clients;
     int i =0;
 
@@ -112,8 +112,8 @@ int addClient(Table_Adresse *table) {
             break;
         }
     }
-    generateAdresseIP(*table, ip);
-    table->clients[i].adresseIP = *ip;
+    generateAdresseIP(*table, &ip);
+    table->clients[i].adresseIP = ip;
     table->clients[i].num = i+1;
 
     return i;

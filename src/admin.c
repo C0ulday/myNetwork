@@ -22,7 +22,7 @@
  * d'arrêter des clients dynamiquement.
  */
 
-#define NOMBRE_CLIENTS_MAX 3
+
 
 int main(void) {
 
@@ -56,7 +56,8 @@ int main(void) {
         while (scanf(" %d", &reponse_user) == 0) {
             // L'entrée n'est pas un entier valide
             printf("Entrée non valide. Veuillez entrer un entier.\n");
-            scanf(" %d", &reponse_user);
+            printf(">>");
+            scanf("%d", &reponse_user);
 
             // Nettoyer le tampon d'entrée
             fgets(buffer, sizeof(buffer), stdin);
@@ -64,7 +65,11 @@ int main(void) {
 
         // Initilisation de la table des clients
         Table_Adresse table;
-        table.clients = malloc(NOMBRE_CLIENTS_MAX * sizeof(Client));
+        table.clients = (Client *)malloc(NOMBRE_CLIENTS_MAX * sizeof(Client));
+        if(table.clients ==NULL) {
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
         table.nombre_clients = 0;
 
         if (table.clients == NULL) {
@@ -74,7 +79,7 @@ int main(void) {
 
         for (int i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
             for (int j = 0; j < 4; j++) {
-                table.clients[i].adresseIP.adresse[j] = 0;
+                table.clients[i].adresseIP.adresse[j] = (unsigned char)0;
             }
         }
 
@@ -85,30 +90,38 @@ int main(void) {
             perror("mssget");
             exit(EXIT_FAILURE);
         }
-        printf("%d", file_id);
 
         switch (reponse_user) {
 
         case 1:
 
             // Lancement d'un terminal externe avec une instance de serveur
+            printf("Lancemment du serveur...\n");
             // Type 1 = message normal
             table.type = 1;
             if (msgsnd(file_id, &table, sizeof(table) - sizeof(long), 0)) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
+            printf("Serveur lancé avec succès !\n");
+            printf(">>");
             break;
         case 2:
             /*NOUVEAU CLIENT*/
-            printf("Création d'un nouveau client...\n");
-            // Envoie au serveur du nouveau client
-            // Type 2 = ajout de client
-            table.type = 2;
-            table.nombre_clients++;
-            if (msgsnd(file_id, &table, sizeof(table) - sizeof(long), 0)) {
-                perror("msgsnd");
-                exit(EXIT_FAILURE);
+            if (table.nombre_clients < NOMBRE_CLIENTS_MAX) {
+                printf("Création d'un nouveau client...\n");
+                // Envoie au serveur du nouveau client
+                // Type 2 = ajout de client
+                table.type = 2;
+                table.nombre_clients++;
+                if (msgsnd(file_id, &table, sizeof(table) - sizeof(long), 0)) {
+                    perror("msgsnd");
+                    exit(EXIT_FAILURE);
+                }
+                printf(">>");
+            } else {
+                printf("Nombre limite de clients atteint !\n");
+                printf(">>");
             }
 
             break;
@@ -118,9 +131,15 @@ int main(void) {
             break;
         case 5:
             printf("A bientôt !");
+            free(table.clients);
+            if (msgctl(file_id, IPC_RMID, NULL) == -1) {
+                perror("msgctl");
+            }
             exit(EXIT_SUCCESS);
+        default:
+            printf(">>");
         }
-        free(table.clients);
+      
     }
 
     return 0;
