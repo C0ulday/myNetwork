@@ -72,7 +72,8 @@ int main(void) {
             printf("( ! ) Nouvelle requête : attribution d'adresse IP à un "
                    "client\n");
             int index_client = addClient(&table);
-            printf("( + ) Client %d : %u.%u.%u.%u\n", table.clients->num,
+            printf("( + ) Client %d : %u.%u.%u.%u\n",
+                   table.clients[index_client].num,
                    table.clients[index_client].adresseIP.adresse[0],
                    table.clients[index_client].adresseIP.adresse[1],
                    table.clients[index_client].adresseIP.adresse[2],
