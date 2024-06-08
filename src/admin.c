@@ -49,14 +49,13 @@ int main(void) {
     ===================================================*/
     Table_Adresse table;
     // Initilisation de la table des clients
-    initializeTableClients(&table,NOMBRE_CLIENTS_MAX);
-
+    initializeTableClients(&table, NOMBRE_CLIENTS_MAX);
 
     // Création de la file de message Admin - Serveur
     key_t cle_serveur = ftok("cle.txt", 1);
     int file_id = msgget(cle_serveur, IPC_CREAT | 0666);
     if (file_id == -1) {
-        perror("mssget");
+        perror("msgget");
         exit(EXIT_FAILURE);
     }
 
@@ -78,10 +77,11 @@ int main(void) {
         case 1:
 
             // Lancement d'un terminal externe avec une instance de serveur
-            printf("Lancemment du serveur...\n");
+            printf("Lancement du serveur...\n");
             // Type 1 = message normal
             table.type = 1;
-            if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 0)) {
+            if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long),
+                       0) == -1) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
@@ -95,8 +95,8 @@ int main(void) {
                 // Envoie au serveur du nouveau client
                 // Type 2 = ajout de client
                 table.type = 2;
-                table.nombre_clients++;
-                if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 0)) {
+                if (msgsnd(file_id, &table,
+                           sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
                     perror("msgsnd");
                     exit(EXIT_FAILURE);
                 }

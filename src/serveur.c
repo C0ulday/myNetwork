@@ -28,16 +28,16 @@ int main(void) {
     CHOIX UTILISATEUR MENU
     ===================================================*/
 
+    Table_Adresse table;
+    // Initilisation de la table des clients
+    initializeTableClients(&table, NOMBRE_CLIENTS_MAX);
+
     // Déclaration de la clé de file Serveur - Admin
     key_t cle_admin = ftok("cle.txt", 1);
-;
+    ;
     // Déclaration de la clé de file Serveur - Client
     key_t cle_client = ftok("cle.txt", 2);
     int file_id = msgget(cle_admin, 0666);
-
-    Table_Adresse table;
-    // Initilisation de la table des clients
-    initializeTableClients(&table,NOMBRE_CLIENTS_MAX);
 
     if (file_id == -1) {
         perror("msgget");
@@ -47,7 +47,8 @@ int main(void) {
     while (1) {
 
         /*LANCEMENT SERVEUR*/
-        if (msgrcv(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 1, 0) == -1) {
+        if (msgrcv(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 1,
+                   0) == -1) {
             perror("msgrcv");
             exit(EXIT_FAILURE);
         }
@@ -61,19 +62,21 @@ int main(void) {
         }
         /*AJOUT CLIENT - ATTRIBUTION ADRESSE IP*/
         // Type 2 = ajout de client
-        if (msgrcv(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 2, 0) == -1) {
+        if (msgrcv(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 2,
+                   0) == -1) {
             perror("msgrcv");
             exit(EXIT_FAILURE);
         }
         if (table.type == 2) {
             // Ajout de client
-            printf("( ! ) Nouvelle requête : attribution d'adresse IP à un client\n");
-            int index_client = 0;
-            printf("%d\n",index_client);
-            printf("( + ) Client %d : %u.%u.%u.%u\n",table.nombre_clients,table.clients[index_client].adresseIP.adresse[0],
-            table.clients[index_client].adresseIP.adresse[1],
-            table.clients[index_client].adresseIP.adresse[2],
-            table.clients[index_client].adresseIP.adresse[3]);
+            printf("( ! ) Nouvelle requête : attribution d'adresse IP à un "
+                   "client\n");
+            int index_client = addClient(&table);
+            printf("( + ) Client %d : %u.%u.%u.%u\n", table.clients->num,
+                   table.clients[index_client].adresseIP.adresse[0],
+                   table.clients[index_client].adresseIP.adresse[1],
+                   table.clients[index_client].adresseIP.adresse[2],
+                   table.clients[index_client].adresseIP.adresse[3]);
         }
     }
 
