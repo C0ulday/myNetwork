@@ -52,7 +52,34 @@ void print_menu(const char *title, const char items[][MENU_ITEM_LENGTH],
 FONCTIONS SERVEUR
 
 ===================================================*/
+/*TABLE ADRESSE*/
+/**
+ * @brief Initialise une table de clients.
+ *
+ * @param table L'adresse de la table.
+ * @param nombre_clients_max Le nombre de clients que contiendra la table de clients.
+ */
+void initializeTableClients(Table_Adresse* table, int nombre_clients_max) {
 
+    if (table == NULL) {
+        perror("table is NULL");
+        exit(EXIT_FAILURE);
+    }
+
+    table->type = 0;  // Initialisation de type, ajuster selon vos besoins
+    table->nombre_clients = 0;
+    table->clients = (Client *)malloc(nombre_clients_max * sizeof(Client));
+    if (table->clients == NULL) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+
+    // Initialiser les adresses IP des clients à 0
+    for (int i = 0; i < nombre_clients_max; i++) {
+        memset(table->clients[i].adresseIP.adresse, 0, sizeof(table->clients[i].adresseIP.adresse));
+        table->clients[i].num = 0;
+    }
+}
 /*ADRESSES IP*/
 /**
  * @brief Vérifie l'existence d'une adresse IP dans une table d'adresses.
@@ -135,3 +162,4 @@ void suppClient(Table_Adresse *table, Adresse_IP *ip) {
         }
     }
 }
+

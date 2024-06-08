@@ -22,8 +22,6 @@
  * d'arrêter des clients dynamiquement.
  */
 
-
-
 int main(void) {
 
     /*===================================================
@@ -49,6 +47,18 @@ int main(void) {
     /*===================================================
     CHOIX UTILISATEUR MENU
     ===================================================*/
+    Table_Adresse table;
+    // Initilisation de la table des clients
+    initializeTableClients(&table,NOMBRE_CLIENTS_MAX);
+
+
+    // Création de la file de message Admin - Serveur
+    key_t cle_serveur = ftok("cle.txt", 1);
+    int file_id = msgget(cle_serveur, IPC_CREAT | 0666);
+    if (file_id == -1) {
+        perror("mssget");
+        exit(EXIT_FAILURE);
+    }
 
     // Lire l'entrée de l'utilisateur
     printf(">>");
@@ -63,34 +73,6 @@ int main(void) {
             fgets(buffer, sizeof(buffer), stdin);
         }
 
-        // Initilisation de la table des clients
-        Table_Adresse table;
-        table.clients = (Client *)malloc(NOMBRE_CLIENTS_MAX * sizeof(Client));
-        if(table.clients ==NULL) {
-            perror("malloc");
-            exit(EXIT_FAILURE);
-        }
-        table.nombre_clients = 0;
-
-        if (table.clients == NULL) {
-            perror("Allocation mémoire");
-            exit(EXIT_FAILURE);
-        }
-
-        for (int i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
-            for (int j = 0; j < 4; j++) {
-                table.clients[i].adresseIP.adresse[j] = (unsigned char)0;
-            }
-        }
-
-        // Création de la file de message Admin - Serveur
-        key_t cle_serveur = ftok("cle.txt", 1);
-        int file_id = msgget(cle_serveur, IPC_CREAT | 0666);
-        if (file_id == -1) {
-            perror("mssget");
-            exit(EXIT_FAILURE);
-        }
-
         switch (reponse_user) {
 
         case 1:
@@ -99,7 +81,7 @@ int main(void) {
             printf("Lancemment du serveur...\n");
             // Type 1 = message normal
             table.type = 1;
-            if (msgsnd(file_id, &table, sizeof(table) - sizeof(long), 0)) {
+            if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 0)) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
@@ -114,7 +96,7 @@ int main(void) {
                 // Type 2 = ajout de client
                 table.type = 2;
                 table.nombre_clients++;
-                if (msgsnd(file_id, &table, sizeof(table) - sizeof(long), 0)) {
+                if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 0)) {
                     perror("msgsnd");
                     exit(EXIT_FAILURE);
                 }
@@ -139,7 +121,6 @@ int main(void) {
         default:
             printf(">>");
         }
-      
     }
 
     return 0;
