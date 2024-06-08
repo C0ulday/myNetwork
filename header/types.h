@@ -11,7 +11,7 @@ typedef struct {
 } Adresse_IP;
 
 typedef struct{
-  Adresse_IP adresse;
+  Adresse_IP adresseIP;
   int num;
 }Client;
 

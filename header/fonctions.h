@@ -13,4 +13,13 @@ FONCTIONS ADMIN
 void print_menu(const char *title, const char items[][MENU_ITEM_LENGTH],
                 int item_count);
 
+/*===================================================
+FONCTIONS SERVEUR
+===================================================*/
+
+int existAdresseIP(Table_Adresse table, Adresse_IP *ip);
+void generateAdresseIP(Table_Adresse table, Adresse_IP *ip);
+int addClient(Table_Adresse *table);
+void suppClient(Table_Adresse *table, Adresse_IP *ip);
+
 #endif // !_FONCTIONS_C
