@@ -85,12 +85,9 @@ void initializeTableClients(Table_Adresse *table, int nombre_clients_max) {
  * @param index_client Indice du client à vérifier.
  * @return 1 si l'adresse est nulle, -1 sinon.
  */
-
 int nullClient(Table_Adresse *table, int index_client) {
-
     int client_existe =
         existAdresseIP(*table, table->clients[index_client].adresseIP);
-
     if (client_existe != -1) {
         if (table->clients[client_existe].adresseIP.adresse[0] == 0 &&
             table->clients[client_existe].adresseIP.adresse[1] == 0 &&

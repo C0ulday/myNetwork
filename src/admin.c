@@ -81,7 +81,8 @@ int main(void) {
             printf("Lancement du serveur...\n");
             // Type 1 = message normal
             table.type = 1;
-            if (msgsnd(file_id, &table, sizeof(Table_Adresse), 0) == -1) {
+            if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long),
+                       0) == -1) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
@@ -95,7 +96,8 @@ int main(void) {
                 // Envoie au serveur du nouveau client
                 // Type 2 = ajout de client
                 table.type = 2;
-                if (msgsnd(file_id, &table, sizeof(Table_Adresse), 0) == -1) {
+                if (msgsnd(file_id, &table,
+                           sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
                     perror("msgsnd");
                     exit(EXIT_FAILURE);
                 }
@@ -103,8 +105,8 @@ int main(void) {
                 // table m.à.j.
                 sleep(1);
                 // L'admin réucprère la table m.à.j. du serveur
-                if (msgrcv(file_id, &table, sizeof(Table_Adresse), 6, 0) ==
-                    -1) {
+                if (msgrcv(file_id, &table,
+                           sizeof(Table_Adresse) - sizeof(long), 6, 0) == -1) {
                     perror("msgrcv");
                     exit(EXIT_FAILURE);
                 }
@@ -134,24 +136,24 @@ int main(void) {
                 scanf("%d", &client_a_arreter);
                 client_a_arreter--;
                 // Supprimer le client
-                if (client_a_arreter <= 0 ||
-                    nullClient(&table, client_a_arreter) == -1) {
+                if (client_a_arreter < 0 ||
+                    nullClient(&table, client_a_arreter) == 1) {
                     printf("Client non trouvé !\n");
                     printf(">>");
                     break;
                 }
                 // Envoie du client supprimé au serveur
-                sprintf(buffer, "Le client % d: %u.%u.%u.%u a été supprimé.\n ",
+                sprintf(table.buffer, "\t( - ) Client %d: %u.%u.%u.%u\n",
                         table.clients[client_a_arreter].num,
                         table.clients[client_a_arreter].adresseIP.adresse[0],
                         table.clients[client_a_arreter].adresseIP.adresse[1],
                         table.clients[client_a_arreter].adresseIP.adresse[2],
                         table.clients[client_a_arreter].adresseIP.adresse[3]);
-                table.type = 3;
                 suppClient(&table, &table.clients[client_a_arreter].adresseIP);
                 // Type 3 = arrêt de client
                 table.type = 3;
-                if (msgsnd(file_id, &table, sizeof(Table_Adresse), 0) == -1) {
+                if (msgsnd(file_id, &table,
+                           sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
                     perror("msgsnd");
                     exit(EXIT_FAILURE);
                 }
@@ -165,6 +167,10 @@ int main(void) {
             break;
         case 5:
             printf("A bientôt !");
+            // Envoie un signal au serveur pour qu'il se termine
+            table.type = 5;
+            msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 0);
+            sleep(1);
             if (msgctl(file_id, IPC_RMID, NULL) == -1) {
                 perror("msgctl");
             }
