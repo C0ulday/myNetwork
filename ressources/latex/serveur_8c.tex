@@ -1,0 +1,41 @@
+\hypertarget{serveur_8c}{}\doxysection{Référence du fichier /home/sita/my\+Network/src/serveur.c}
+\label{serveur_8c}\index{/home/sita/myNetwork/src/serveur.c@{/home/sita/myNetwork/src/serveur.c}}
+
+
+Serveur du réseau Serveur permet \+:  
+
+
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ipc.\+h$>$}\newline
+{\ttfamily \#include $<$sys/msg.\+h$>$}\newline
+{\ttfamily \#include $<$sys/sem.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../header/fonctions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../header/types.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de serveur.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{serveur_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{serveur_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{serveur_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+int {\bfseries main} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Serveur du réseau Serveur permet \+: 
+
+
+\begin{DoxyItemize}
+\item Ce programme recevra des trames des programmes clients et les enverra au programme client correspondant.\+Il ne modifiera pas la trame.
+\item En cas de destinataire inconnu ou injoignable, le serveur enverra un message spécifique au client.
+\item Le serveur est chargé de vérifier régulièrement si les clients sont “vivants” en cas de non-\/réponse, le serveur ne redirige plus les trames vers ce client et prévient les autres clients.
+\item En cas de nouveau client le serveur lui alloue une IP et prévient l\textquotesingle{}apparition aux autres clients. 
+\end{DoxyItemize}

@@ -1,0 +1,213 @@
+\hypertarget{fonctions_8c}{}\doxysection{Référence du fichier /home/sita/my\+Network/src/fonctions.c}
+\label{fonctions_8c}\index{/home/sita/myNetwork/src/fonctions.c@{/home/sita/myNetwork/src/fonctions.c}}
+
+
+contient des fonctions utiles au programme.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../header/fonctions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../header/types.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de fonctions.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{fonctions_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{fonctions_8c_a379d571ccf17d57ff8223ba08a95a4f2}{print\+\_\+menu}} (const char $\ast$title, const char items\mbox{[}$\,$\mbox{]}\mbox{[}MENU\+\_\+\+ITEM\+\_\+\+LENGTH\mbox{]}, int item\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Affiche un menu avec des tirets pour séparer les sections. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonctions_8c_aa24416dcf33d7e4f9d11a9904efe43eb}{initialize\+Table\+Clients}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$table, int nombre\+\_\+clients\+\_\+max)
+\begin{DoxyCompactList}\small\item\em Initialise une table de clients. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{fonctions_8c_a19861d82b762829f41dc2a6b32252c6b}{null\+Client}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} table, int index\+\_\+client)
+\begin{DoxyCompactList}\small\item\em Vérifie que l\textquotesingle{}adresse IP d\textquotesingle{}un client est nulle, c.\+à.\+d 0.\+0.\+0.\+0. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonctions_8c_a401fe56aa2fe600ff148e50785fc7ae1}{print\+Client}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} table)
+\begin{DoxyCompactList}\small\item\em Affiche les clients d\textquotesingle{}adresse IP non nulle. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{fonctions_8c_a785ba43672f6664623feefb750280472}{exist\+Adresse\+IP}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} table, \mbox{\hyperlink{structAdresse__IP}{Adresse\+\_\+\+IP}} ip)
+\begin{DoxyCompactList}\small\item\em Vérifie l\textquotesingle{}existence d\textquotesingle{}une adresse IP dans une table d\textquotesingle{}adresses. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonctions_8c_aecddfc93b1dec7a791777f145194477e}{generate\+Adresse\+IP}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} table, \mbox{\hyperlink{structAdresse__IP}{Adresse\+\_\+\+IP}} $\ast$ip)
+\begin{DoxyCompactList}\small\item\em Génère une adresse IP qui n\textquotesingle{}a pas été déjà attribuée dans le réseau. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{fonctions_8c_a9f94f47ff8e374be971fb1c6c3510622}{add\+Client}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$table)
+\begin{DoxyCompactList}\small\item\em Ajoute un nouveau client dans la table de clients avec une adresse IP valide. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonctions_8c_a1fb0214ea2924c1dd37bd25f92238a77}{supp\+Client}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$table, \mbox{\hyperlink{structAdresse__IP}{Adresse\+\_\+\+IP}} $\ast$ip)
+\begin{DoxyCompactList}\small\item\em Supprime un client de la table en mettant son adresse à zéro. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+contient des fonctions utiles au programme. 
+
+
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{fonctions_8c_a9f94f47ff8e374be971fb1c6c3510622}\label{fonctions_8c_a9f94f47ff8e374be971fb1c6c3510622}} 
+\index{fonctions.c@{fonctions.c}!addClient@{addClient}}
+\index{addClient@{addClient}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{addClient()}{addClient()}}
+{\footnotesize\ttfamily int add\+Client (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$}]{table }\end{DoxyParamCaption})}
+
+
+
+Ajoute un nouveau client dans la table de clients avec une adresse IP valide. 
+
+Ajoute un nouveau client à la table des adresses.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em table} & Tableau des clients. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+La position du nouveau client dans la table. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_a785ba43672f6664623feefb750280472}\label{fonctions_8c_a785ba43672f6664623feefb750280472}} 
+\index{fonctions.c@{fonctions.c}!existAdresseIP@{existAdresseIP}}
+\index{existAdresseIP@{existAdresseIP}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{existAdresseIP()}{existAdresseIP()}}
+{\footnotesize\ttfamily int exist\+Adresse\+IP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}}}]{table,  }\item[{\mbox{\hyperlink{structAdresse__IP}{Adresse\+\_\+\+IP}}}]{ip }\end{DoxyParamCaption})}
+
+
+
+Vérifie l\textquotesingle{}existence d\textquotesingle{}une adresse IP dans une table d\textquotesingle{}adresses. 
+
+Vérifie si une adresse IP existe dans la table des adresses.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em table} & Tableau des clients. \\
+\hline
+{\em ip} & L\textquotesingle{}adresse IP a vérifié. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+La position du client si l\textquotesingle{}adresse est trouvée, -\/1 sinon. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_aecddfc93b1dec7a791777f145194477e}\label{fonctions_8c_aecddfc93b1dec7a791777f145194477e}} 
+\index{fonctions.c@{fonctions.c}!generateAdresseIP@{generateAdresseIP}}
+\index{generateAdresseIP@{generateAdresseIP}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{generateAdresseIP()}{generateAdresseIP()}}
+{\footnotesize\ttfamily void generate\+Adresse\+IP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}}}]{table,  }\item[{\mbox{\hyperlink{structAdresse__IP}{Adresse\+\_\+\+IP}} $\ast$}]{ip }\end{DoxyParamCaption})}
+
+
+
+Génère une adresse IP qui n\textquotesingle{}a pas été déjà attribuée dans le réseau. 
+
+Génère une adresse IP unique et l\textquotesingle{}assigne à un client dans la table des adresses.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em table} & Tableau des clients. \\
+\hline
+{\em ip} & L\textquotesingle{}adresse IP a vérifié. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Void \+: modifie directement ip. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_aa24416dcf33d7e4f9d11a9904efe43eb}\label{fonctions_8c_aa24416dcf33d7e4f9d11a9904efe43eb}} 
+\index{fonctions.c@{fonctions.c}!initializeTableClients@{initializeTableClients}}
+\index{initializeTableClients@{initializeTableClients}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{initializeTableClients()}{initializeTableClients()}}
+{\footnotesize\ttfamily void initialize\+Table\+Clients (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$}]{table,  }\item[{int}]{nombre\+\_\+clients\+\_\+max }\end{DoxyParamCaption})}
+
+
+
+Initialise une table de clients. 
+
+Initialise la table des clients avec un nombre maximum de clients donné.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em table} & L\textquotesingle{}adresse de la table. \\
+\hline
+{\em nombre\+\_\+clients\+\_\+max} & Le nombre de clients que contiendra la table de clients. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fonctions_8c_a19861d82b762829f41dc2a6b32252c6b}\label{fonctions_8c_a19861d82b762829f41dc2a6b32252c6b}} 
+\index{fonctions.c@{fonctions.c}!nullClient@{nullClient}}
+\index{nullClient@{nullClient}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{nullClient()}{nullClient()}}
+{\footnotesize\ttfamily int null\+Client (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}}}]{table,  }\item[{int}]{index\+\_\+client }\end{DoxyParamCaption})}
+
+
+
+Vérifie que l\textquotesingle{}adresse IP d\textquotesingle{}un client est nulle, c.\+à.\+d 0.\+0.\+0.\+0. 
+
+Met à zéro les informations d\textquotesingle{}un client à l\textquotesingle{}index donné dans la table des adresses.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em table} & Tableau des clients. \\
+\hline
+{\em index\+\_\+client} & Indice du client à vérifier. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+1 si l\textquotesingle{}adresse est nulle, -\/1 sinon. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_a379d571ccf17d57ff8223ba08a95a4f2}\label{fonctions_8c_a379d571ccf17d57ff8223ba08a95a4f2}} 
+\index{fonctions.c@{fonctions.c}!print\_menu@{print\_menu}}
+\index{print\_menu@{print\_menu}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{print\_menu()}{print\_menu()}}
+{\footnotesize\ttfamily void print\+\_\+menu (\begin{DoxyParamCaption}\item[{const char $\ast$}]{title,  }\item[{const char}]{items\mbox{[}$\,$\mbox{]}\mbox{[}\+MENU\+\_\+\+ITEM\+\_\+\+LENGTH\mbox{]},  }\item[{int}]{item\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Affiche un menu avec des tirets pour séparer les sections. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em title} & Le titre du menu. \\
+\hline
+{\em items} & Le tableau des items du menu. \\
+\hline
+{\em item\+\_\+count} & Le nombre d\textquotesingle{}items dans le menu. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fonctions_8c_a401fe56aa2fe600ff148e50785fc7ae1}\label{fonctions_8c_a401fe56aa2fe600ff148e50785fc7ae1}} 
+\index{fonctions.c@{fonctions.c}!printClient@{printClient}}
+\index{printClient@{printClient}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{printClient()}{printClient()}}
+{\footnotesize\ttfamily void print\+Client (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}}}]{table }\end{DoxyParamCaption})}
+
+
+
+Affiche les clients d\textquotesingle{}adresse IP non nulle. 
+
+Affiche les informations d\textquotesingle{}un client à l\textquotesingle{}index donné dans la table des adresses.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em table} & Pointeur vers tableau des clients. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Void \+: affiche directement les clients d\textquotesingle{}adresse IP non nulle. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_a1fb0214ea2924c1dd37bd25f92238a77}\label{fonctions_8c_a1fb0214ea2924c1dd37bd25f92238a77}} 
+\index{fonctions.c@{fonctions.c}!suppClient@{suppClient}}
+\index{suppClient@{suppClient}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{suppClient()}{suppClient()}}
+{\footnotesize\ttfamily void supp\+Client (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$}]{table,  }\item[{\mbox{\hyperlink{structAdresse__IP}{Adresse\+\_\+\+IP}} $\ast$}]{ip }\end{DoxyParamCaption})}
+
+
+
+Supprime un client de la table en mettant son adresse à zéro. 
+
+Supprime un client de la table des adresses en utilisant son adresse IP.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em table} & Tableau des clients. \\
+\hline
+{\em ip} & L\textquotesingle{}adresse IP a vérifié. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Void \+: modifie directement ip. 
+\end{DoxyReturn}

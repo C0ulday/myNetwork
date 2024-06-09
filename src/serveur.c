@@ -93,7 +93,6 @@ int main(void) {
 
         if (table.type == 2) {
 
-            /*PAQUET ADMIN*/
             printf("( ! ) Nouvelle requête : Allocation d'une adresse IP "
                    "client\n");
             int index_client = addClient(&table);
@@ -107,6 +106,7 @@ int main(void) {
             // Le serveur renvoie la table m.à.j à l'admin
             // Type = 6 est le type par défaut
             // Cette affectation permet de sortir du càs Type =2
+            /*PAQUET ADMIN*/
             table.type = 6;
             if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long),
                        0) == -1) {
@@ -131,6 +131,11 @@ int main(void) {
                     table.clients[index_client].adresseIP.adresse[3]);
             if (msgsnd(file_id_client, &message, sizeof(Message) - sizeof(long),
                        0)) {
+                perror("msgsnd");
+                exit(EXIT_FAILURE);
+            }
+            if (msgsnd(file_id_client, &table,
+                       sizeof(Table_Adresse) - sizeof(long), 0)) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
@@ -179,6 +184,7 @@ int main(void) {
                 exit(EXIT_FAILURE);
             }
             printf("( !! ) Arrêt du serveur\n");
+            exit(EXIT_SUCCESS);
         }
         /* CLIENT QUITTE*/
 
@@ -191,6 +197,16 @@ int main(void) {
                    table.clients[message.index].adresseIP.adresse[2],
                    table.clients[message.index].adresseIP.adresse[3]);
             suppClient(&table, &table.clients[message.index].adresseIP);
+        }
+        /*REQUETE GENERAL DU CLIENT*/
+        // Si le client envoie reqûete type 1, le serveur renvoie la table
+        if (msgrcv(file_id_client, &message, sizeof(Message) - sizeof(long), 1,
+                   IPC_NOWAIT) != -1) {
+            if (msgsnd(file_id_client, &table,
+                       sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
+                perror("msgsnd");
+                exit(EXIT_FAILURE);
+            }
         }
     }
 

@@ -1,0 +1,41 @@
+\hypertarget{fonctions_8h_source}{}\doxysection{fonctions.\+h}
+\label{fonctions_8h_source}\index{/home/sita/myNetwork/header/fonctions.h@{/home/sita/myNetwork/header/fonctions.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#include "{}../header/types.h"{}}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#ifndef \_FONCTIONS\_H}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#define \_FONCTIONS\_H}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{comment}{/*===================================================}}
+\DoxyCodeLine{7 \textcolor{comment}{FONCTIONS ADMIN}}
+\DoxyCodeLine{8 \textcolor{comment}{===================================================*/}}
+\DoxyCodeLine{9 \textcolor{comment}{/*MENU*/}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define MAX\_MENU\_ITEMS 10}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define MENU\_ITEM\_LENGTH 50}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define SEPARATOR\_LENGTH 50}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keywordtype}{void} \mbox{\hyperlink{fonctions_8c_a379d571ccf17d57ff8223ba08a95a4f2}{print\_menu}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *title, \textcolor{keyword}{const} \textcolor{keywordtype}{char} items[][MENU\_ITEM\_LENGTH],}
+\DoxyCodeLine{15                 \textcolor{keywordtype}{int} item\_count);}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{comment}{/*===================================================}}
+\DoxyCodeLine{18 \textcolor{comment}{FONCTIONS SERVEUR}}
+\DoxyCodeLine{19 \textcolor{comment}{===================================================*/}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{28 \textcolor{keywordtype}{void} \mbox{\hyperlink{fonctions_8c_aa24416dcf33d7e4f9d11a9904efe43eb}{initializeTableClients}}(\mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}} *table, \textcolor{keywordtype}{int} nombre\_clients\_max);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{38 \textcolor{keywordtype}{int} \mbox{\hyperlink{fonctions_8c_a19861d82b762829f41dc2a6b32252c6b}{nullClient}}(\mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}} table, \textcolor{keywordtype}{int} index\_client);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{46 \textcolor{keywordtype}{void} \mbox{\hyperlink{fonctions_8c_a401fe56aa2fe600ff148e50785fc7ae1}{printClient}}(\mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}} table);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{55 \textcolor{keywordtype}{int} \mbox{\hyperlink{fonctions_8c_a785ba43672f6664623feefb750280472}{existAdresseIP}}(\mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}} table, \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}} ip);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{64 \textcolor{keywordtype}{void} \mbox{\hyperlink{fonctions_8c_aecddfc93b1dec7a791777f145194477e}{generateAdresseIP}}(\mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}} table, \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}} *ip);}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{72 \textcolor{keywordtype}{int} \mbox{\hyperlink{fonctions_8c_a9f94f47ff8e374be971fb1c6c3510622}{addClient}}(\mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}} *table);}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{81 \textcolor{keywordtype}{void} \mbox{\hyperlink{fonctions_8c_a1fb0214ea2924c1dd37bd25f92238a77}{suppClient}}(\mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}} *table, \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}} *ip);}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// !\_FONCTIONS\_H}}
+
+\end{DoxyCode}

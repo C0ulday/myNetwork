@@ -23,7 +23,7 @@ admin: $(OBJDIR)/admin.o $(OBJDIR)/fonctions.o
 
 # Cible pour l'exécutable serveur
 serveur: $(OBJDIR)/serveur.o $(OBJDIR)/fonctions.o
-	$(CC) $^ -o $@ -g
+	$(CC) $^ -o $@
 
 # Cible pour l'exécutable client
 client: $(OBJDIR)/client.o $(OBJDIR)/fonctions.o

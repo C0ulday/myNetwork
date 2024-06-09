@@ -1,0 +1,8 @@
+<map id="/home/sita/myNetwork/header/types.h" name="/home/sita/myNetwork/header/types.h">
+<area shape="rect" id="node1" title="Contient les constantes et les structures définies." alt="" coords="297,5,468,47"/>
+<area shape="rect" id="node2" href="$fonctions_8h_source.html" title=" " alt="" coords="297,95,468,136"/>
+<area shape="rect" id="node3" href="$admin_8c.html" title="Admin du réseau Admin permet :" alt="" coords="5,184,176,225"/>
+<area shape="rect" id="node4" href="$client_8c.html" title="Client du réseau Client permet :" alt="" coords="200,184,371,225"/>
+<area shape="rect" id="node5" href="$fonctions_8c.html" title="contient des fonctions utiles au programme." alt="" coords="395,184,565,225"/>
+<area shape="rect" id="node6" href="$serveur_8c.html" title="Serveur du réseau Serveur permet :" alt="" coords="589,184,760,225"/>
+</map>

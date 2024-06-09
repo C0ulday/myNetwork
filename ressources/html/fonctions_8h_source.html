@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.4"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>I Make My Own Network:  Fichier source de /home/sita/myNetwork/header/fonctions.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">I Make My Own Network
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.4 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_1ec98ce50fa6ec55b40b8ffb1df38c3c.html">header</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">fonctions.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;../header/types.h&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ifndef _FONCTIONS_H</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#define _FONCTIONS_H</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/*===================================================</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">FONCTIONS ADMIN</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">===================================================*/</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/*MENU*/</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#define MAX_MENU_ITEMS 10</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define MENU_ITEM_LENGTH 50</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#define SEPARATOR_LENGTH 50</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keywordtype">void</span> <a class="code hl_function" href="fonctions_8c.html#a379d571ccf17d57ff8223ba08a95a4f2">print_menu</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *title, <span class="keyword">const</span> <span class="keywordtype">char</span> items[][MENU_ITEM_LENGTH],</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                <span class="keywordtype">int</span> item_count);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/*===================================================</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">FONCTIONS SERVEUR</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">===================================================*/</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">void</span> <a class="code hl_function" href="fonctions_8c.html#aa24416dcf33d7e4f9d11a9904efe43eb">initializeTableClients</a>(<a class="code hl_struct" href="structTable__Adresse.html">Table_Adresse</a> *table, <span class="keywordtype">int</span> nombre_clients_max);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keywordtype">int</span> <a class="code hl_function" href="fonctions_8c.html#a19861d82b762829f41dc2a6b32252c6b">nullClient</a>(<a class="code hl_struct" href="structTable__Adresse.html">Table_Adresse</a> table, <span class="keywordtype">int</span> index_client);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">void</span> <a class="code hl_function" href="fonctions_8c.html#a401fe56aa2fe600ff148e50785fc7ae1">printClient</a>(<a class="code hl_struct" href="structTable__Adresse.html">Table_Adresse</a> table);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">int</span> <a class="code hl_function" href="fonctions_8c.html#a785ba43672f6664623feefb750280472">existAdresseIP</a>(<a class="code hl_struct" href="structTable__Adresse.html">Table_Adresse</a> table, <a class="code hl_struct" href="structAdresse__IP.html">Adresse_IP</a> ip);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">void</span> <a class="code hl_function" href="fonctions_8c.html#aecddfc93b1dec7a791777f145194477e">generateAdresseIP</a>(<a class="code hl_struct" href="structTable__Adresse.html">Table_Adresse</a> table, <a class="code hl_struct" href="structAdresse__IP.html">Adresse_IP</a> *ip);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keywordtype">int</span> <a class="code hl_function" href="fonctions_8c.html#a9f94f47ff8e374be971fb1c6c3510622">addClient</a>(<a class="code hl_struct" href="structTable__Adresse.html">Table_Adresse</a> *table);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keywordtype">void</span> <a class="code hl_function" href="fonctions_8c.html#a1fb0214ea2924c1dd37bd25f92238a77">suppClient</a>(<a class="code hl_struct" href="structTable__Adresse.html">Table_Adresse</a> *table, <a class="code hl_struct" href="structAdresse__IP.html">Adresse_IP</a> *ip);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif </span><span class="comment">// !_FONCTIONS_H</span></div>
+<div class="ttc" id="afonctions_8c_html_a19861d82b762829f41dc2a6b32252c6b"><div class="ttname"><a href="fonctions_8c.html#a19861d82b762829f41dc2a6b32252c6b">nullClient</a></div><div class="ttdeci">int nullClient(Table_Adresse table, int index_client)</div><div class="ttdoc">Vérifie que l'adresse IP d'un client est nulle, c.à.d 0.0.0.0.</div><div class="ttdef"><b>Definition:</b> fonctions.c:88</div></div>
+<div class="ttc" id="afonctions_8c_html_a1fb0214ea2924c1dd37bd25f92238a77"><div class="ttname"><a href="fonctions_8c.html#a1fb0214ea2924c1dd37bd25f92238a77">suppClient</a></div><div class="ttdeci">void suppClient(Table_Adresse *table, Adresse_IP *ip)</div><div class="ttdoc">Supprime un client de la table en mettant son adresse à zéro.</div><div class="ttdef"><b>Definition:</b> fonctions.c:193</div></div>
+<div class="ttc" id="afonctions_8c_html_a379d571ccf17d57ff8223ba08a95a4f2"><div class="ttname"><a href="fonctions_8c.html#a379d571ccf17d57ff8223ba08a95a4f2">print_menu</a></div><div class="ttdeci">void print_menu(const char *title, const char items[][MENU_ITEM_LENGTH], int item_count)</div><div class="ttdoc">Affiche un menu avec des tirets pour séparer les sections.</div><div class="ttdef"><b>Definition:</b> fonctions.c:28</div></div>
+<div class="ttc" id="afonctions_8c_html_a401fe56aa2fe600ff148e50785fc7ae1"><div class="ttname"><a href="fonctions_8c.html#a401fe56aa2fe600ff148e50785fc7ae1">printClient</a></div><div class="ttdeci">void printClient(Table_Adresse table)</div><div class="ttdoc">Affiche les clients d'adresse IP non nulle.</div><div class="ttdef"><b>Definition:</b> fonctions.c:107</div></div>
+<div class="ttc" id="afonctions_8c_html_a785ba43672f6664623feefb750280472"><div class="ttname"><a href="fonctions_8c.html#a785ba43672f6664623feefb750280472">existAdresseIP</a></div><div class="ttdeci">int existAdresseIP(Table_Adresse table, Adresse_IP ip)</div><div class="ttdoc">Vérifie l'existence d'une adresse IP dans une table d'adresses.</div><div class="ttdef"><b>Definition:</b> fonctions.c:129</div></div>
+<div class="ttc" id="afonctions_8c_html_a9f94f47ff8e374be971fb1c6c3510622"><div class="ttname"><a href="fonctions_8c.html#a9f94f47ff8e374be971fb1c6c3510622">addClient</a></div><div class="ttdeci">int addClient(Table_Adresse *table)</div><div class="ttdoc">Ajoute un nouveau client dans la table de clients avec une adresse IP valide.</div><div class="ttdef"><b>Definition:</b> fonctions.c:166</div></div>
+<div class="ttc" id="afonctions_8c_html_aa24416dcf33d7e4f9d11a9904efe43eb"><div class="ttname"><a href="fonctions_8c.html#aa24416dcf33d7e4f9d11a9904efe43eb">initializeTableClients</a></div><div class="ttdeci">void initializeTableClients(Table_Adresse *table, int nombre_clients_max)</div><div class="ttdoc">Initialise une table de clients.</div><div class="ttdef"><b>Definition:</b> fonctions.c:64</div></div>
+<div class="ttc" id="afonctions_8c_html_aecddfc93b1dec7a791777f145194477e"><div class="ttname"><a href="fonctions_8c.html#aecddfc93b1dec7a791777f145194477e">generateAdresseIP</a></div><div class="ttdeci">void generateAdresseIP(Table_Adresse table, Adresse_IP *ip)</div><div class="ttdoc">Génère une adresse IP qui n'a pas été déjà attribuée dans le réseau.</div><div class="ttdef"><b>Definition:</b> fonctions.c:149</div></div>
+<div class="ttc" id="astructAdresse__IP_html"><div class="ttname"><a href="structAdresse__IP.html">Adresse_IP</a></div><div class="ttdef"><b>Definition:</b> types.h:12</div></div>
+<div class="ttc" id="astructTable__Adresse_html"><div class="ttname"><a href="structTable__Adresse.html">Table_Adresse</a></div><div class="ttdef"><b>Definition:</b> types.h:21</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+</small></address>
+</body>
+</html>

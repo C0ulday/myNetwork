@@ -204,7 +204,137 @@ void suppClient(Table_Adresse *table, Adresse_IP *ip) {
 }
 
 /*===================================================
-
 FONCTIONS CLIENT
-
 ===================================================*/
+
+/*COMPRESSION  LZ78*/
+void initialiserDico(Dico *dico, int taille) {
+
+    dico->cellule = malloc(taille * sizeof(Cellule));
+    if (dico->cellule == NULL) {
+        printf("Erreur lors de l'allocation mémoire.\n");
+        exit(EXIT_FAILURE); // Quitter le programme en cas d'échec d'allocation
+    }
+    dico->nbCellules = 0; // Initialiser le nombre de cellules à 0
+    dico->cellule[0].index = -1;
+}
+
+void ajouterDansDico(Dico *dico, int index, char *mot) {
+
+    if (dico->nbCellules < MAX_MOTS_DICO) {
+        dico->cellule[dico->nbCellules].index = index;
+        strcpy(dico->cellule[dico->nbCellules].mot, mot);
+        dico->nbCellules++;
+    } else {
+        printf("Le dictionnaire est plein.\n");
+    }
+    dico->cellule[dico->nbCellules].index = -1; // marque la fin du mot
+}
+
+int DansDico(Dico *dico, char *element) {
+
+    int i = 0;
+    while (dico->cellule[i].index != -1) {
+        if (strcmp(dico->cellule[i].mot, element) == 0) {
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
+
+int rechercheIndexDansDico(Dico *dico, char *mot) {
+
+    for (int i = 0; i < dico->nbCellules; i++) {
+        if (strcmp(mot, dico->cellule[i].mot) == 0) {
+            return dico->cellule[i].index;
+        }
+    }
+    return 0;
+}
+
+/*Dans un dico, il faut tenir compte du dernier élément pour marquer la fin :
+si j'ai 3 cellules, j'en initialise 4 pour le token de fin
+*/
+Output *LZ78(char *message) {
+
+    Dico *dico = malloc(sizeof(Dico));
+    Output *outputs = malloc(sizeof(Output));
+
+    if (dico == NULL || outputs == NULL) {
+        printf("Erreur lors de l'allocation mémoire pour Dico ou Outputs.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    initialiserDico(dico, MAX_MOTS_DICO);
+    outputs->dico = dico;
+    outputs->bloc = malloc(dico->nbCellules * sizeof(Bloc));
+
+    char temp[SIZE_MOT_DICO];
+    int taille = strlen(message);
+    int curseur = 0;
+    int nbCellules = 0;
+    char new_temp[SIZE_MOT_DICO];
+
+    /*On rempli le dico de la prmeière lettre */
+
+    /*Conversion du caractère en chaine pour pouvoir le passer dans les
+     * fonctions*/
+
+    temp[0] = message[0];
+
+    outputs->bloc[nbCellules].lettre = temp[0];
+    outputs->bloc[nbCellules].index = 0;
+
+    temp[1] = '\0';
+    ajouterDansDico(dico, ++nbCellules, temp);
+
+    // On vide le buffer
+    strcpy(temp, "");
+
+    /*Je parcours le message*/
+    for (int i = 1; i < taille; i++) {
+        /*Je convertis d'abord le caractère courant en string*/
+        temp[curseur++] = message[i];
+        temp[curseur] = '\0';
+
+        /*Si la chaîne n'est pas dans le dico, je l'ajoute*/
+
+        if (DansDico(dico, temp) == 0) {
+
+            outputs->bloc[nbCellules].lettre = temp[curseur - 1];
+            outputs->bloc[nbCellules].index =
+                rechercheIndexDansDico(dico, temp);
+            ajouterDansDico(dico, ++nbCellules, temp);
+        }
+
+        /*Si la chaîne est déjà dans le dico, j'avance d'un caractère jusqu'à
+        obtenir un mot qui n'est pas encore dans le dico*/
+
+        else {
+            // On s'assure d'incrémenter i seulement si on ne dépasse pas la
+            // taille du message
+            if (i + 1 <= taille) {
+                temp[curseur++] = message[++i];
+                temp[curseur] = '\0';
+
+                while ((DansDico(dico, temp) == 1) && (i + 1 <= taille)) {
+                    temp[curseur++] = message[++i];
+                    temp[curseur] = '\0';
+                }
+                outputs->bloc[nbCellules].lettre = temp[curseur - 1];
+                strncpy(new_temp, temp, curseur - 1);
+                new_temp[curseur - 1] = '\0';
+                outputs->bloc[nbCellules].index =
+                    rechercheIndexDansDico(dico, new_temp);
+                strcpy(new_temp, "");
+            }
+            ajouterDansDico(dico, ++nbCellules, temp);
+        }
+        // on vide le buffer
+        curseur = 0;
+        strcpy(temp, "");
+    }
+
+    return outputs;
+}

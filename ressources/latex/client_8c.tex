@@ -1,0 +1,41 @@
+\hypertarget{client_8c}{}\doxysection{Référence du fichier /home/sita/my\+Network/src/client.c}
+\label{client_8c}\index{/home/sita/myNetwork/src/client.c@{/home/sita/myNetwork/src/client.c}}
+
+
+\mbox{\hyperlink{structClient}{Client}} du réseau \mbox{\hyperlink{structClient}{Client}} permet \+:  
+
+
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ipc.\+h$>$}\newline
+{\ttfamily \#include $<$sys/msg.\+h$>$}\newline
+{\ttfamily \#include $<$sys/sem.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../header/fonctions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../header/types.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de client.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{client_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{client_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{client_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+int {\bfseries main} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+\mbox{\hyperlink{structClient}{Client}} du réseau \mbox{\hyperlink{structClient}{Client}} permet \+: 
+
+
+\begin{DoxyItemize}
+\item Ce programme pourra envoyer des datas utilisateurs (DU) qui seront des caractères alphanumériques, ils seront envoyés sur le réseau uniquement avec des “0” ou des “1” (langage binaire). Ces DU et le client destinataire seront envoyés par l’utilisateur
+\item Réception de trame réseau \+: le programme sera capable d’extraire les DU à partir du code binaire.
+\item Capacité à répondre au serveur qu’il est toujours en fonctionnement.
+\item Proposition à l’utilisateur des différents clients et du texte à envoyer. 
+\end{DoxyItemize}

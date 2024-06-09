@@ -1,0 +1,41 @@
+\hypertarget{admin_8c}{}\doxysection{Référence du fichier /home/sita/my\+Network/src/admin.c}
+\label{admin_8c}\index{/home/sita/myNetwork/src/admin.c@{/home/sita/myNetwork/src/admin.c}}
+
+
+Admin du réseau Admin permet \+:  
+
+
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ipc.\+h$>$}\newline
+{\ttfamily \#include $<$sys/msg.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../header/fonctions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../header/types.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de admin.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{admin_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{admin_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{admin_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+int {\bfseries main} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Admin du réseau Admin permet \+: 
+
+
+\begin{DoxyItemize}
+\item Lancement du programme serveur.
+\item Création des nouveaux clients (pouvant être appelé pendant le fonctionnement).
+\item Arrêt de certains client(pouvant être appelé pendant le fonctionnement).
+\end{DoxyItemize}
+
+Les fonctions de ce fichier sont utilisées pour administrer le réseau en gérant les serveurs et les clients. Cela inclut la capacité de démarrer et d\textquotesingle{}arrêter des clients dynamiquement. 

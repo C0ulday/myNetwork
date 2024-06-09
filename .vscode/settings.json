@@ -5,7 +5,8 @@
         "fonctions.h": "c",
         "stdlib.h": "c",
         "string.h": "c",
-        "signal.h": "c"
+        "signal.h": "c",
+        "ipc.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

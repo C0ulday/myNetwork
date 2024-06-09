@@ -29,11 +29,11 @@ int main(void) {
     initializeTableClients(&table, NOMBRE_CLIENTS_MAX);
 
     Message message;
+    Trame trame;
 
     int sem_id = semget(SEM_KEY, NOMBRE_CLIENTS_MAX, 0666);
     struct sembuf sem_op;
 
-    // Opération P (wait) pour décrémenter le sémaphore
     sem_op.sem_num = 0;
     sem_op.sem_op = -1; // P operation
     sem_op.sem_flg = 0;
@@ -44,6 +44,7 @@ int main(void) {
     }
 
     int reponse_user;
+    int choix_client;
     char message_choix;
 
     int cle_serveur = ftok("cle.txt", 2);
@@ -53,6 +54,7 @@ int main(void) {
         perror("msgget");
         exit(EXIT_FAILURE);
     }
+
     // Titre du menu
     const char *menu_title = "CLIENT - Menu Principal";
 
@@ -66,20 +68,17 @@ int main(void) {
     /*===================================================
     CHOIX UTILISATEUR MENU
     ===================================================*/
-    /*CHOIX 2 - AJOUT CLIENT*/
     while (1) {
         if (msgrcv(file_id, &message, sizeof(message) - sizeof(long), 1,
                    IPC_NOWAIT) != -1) {
             printf("( ツ ) Je suis le client %s\n", message.buffer);
             printf("Que puis-je fais pour vous ?\n");
-
-            msgrcv(file_id, &table, sizeof(table) - sizeof(long), 4,
-                   IPC_NOWAIT);
             sem_op.sem_op = 1; // V operation
             if (semop(sem_id, &sem_op, 1) == -1) {
                 perror("semop V");
                 exit(EXIT_FAILURE);
             }
+
             // Afficher le menu
             print_menu(menu_title, menu_items, item_count);
             printf(">>");
@@ -97,11 +96,66 @@ int main(void) {
                         "soir ?\n"
                         "\te. Message personnalisé\n"
                         "\tf. Quitter \n");
+
                     printf(">>");
                     scanf(" %c", &message_choix);
 
                     switch (message_choix) {
                     case 'a':
+
+                        printf("A quel ami souhaitez-vous envoyer ce "
+                               "message ?\n");
+                        message.type = 1;
+                        msgsnd(file_id, &message,
+                               sizeof(message) - sizeof(long), 0);
+                        sleep(1);
+                        msgrcv(file_id, &table,
+                               sizeof(Table_Adresse) - sizeof(long), 1,
+                               IPC_NOWAIT);
+                        printClient(table);
+                        printf(">>");
+                        scanf("%d", &choix_client);
+                        if (choix_client == message.index) {
+                            printf("凸( •̀_•́ )凸 Bien tenté !\n");
+                            printf("\n");
+                            printClient(table);
+                            printf(">>");
+                            scanf("%d", &choix_client);
+                            break;
+                        } else if (choix_client < 0 ||
+                                   nullClient(table, choix_client) == 1) {
+                            printf("Client non trouvé !\n");
+                            printf("\n");
+                            print_menu(menu_title, menu_items, item_count);
+                            printf(">>");
+                            scanf("%d", &reponse_user);
+                            break;
+                        }
+                        printf("( ! ) Traitement de la requête...\n");
+                        printf("\tClient %d dit %s à Client %d\n",
+                               message.index, message.buffer, choix_client);
+                        sprintf(message.buffer, "Salut !");
+
+                        printf("Compression du message...\n");
+
+                        Output *outputs = LZ78(message.buffer);
+                        // Sleep pour rendre plus dynamique l'affichage
+                        sleep(1);
+
+                        // Affichage du résultat de la compression
+
+                        printf("Résultat de la compression LZ78 :\n");
+
+                        printf("%d\n", outputs->dico->nbCellules);
+                        for (int i = 0; i <= outputs->dico->nbCellules; i++) {
+                            printf("(%d, %c)\n", outputs->bloc[i].index,
+                                   outputs->bloc[i].lettre);
+                        }
+                        // Libérer la mémoire allouée pour le dictionnaire
+
+                        free(outputs->dico);
+                        free(outputs->bloc);
+                        free(outputs);
                         break;
                     case 'b':
                         break;
@@ -129,7 +183,6 @@ int main(void) {
                         printf(">>");
                         break;
                     }
-                    break;
                 case 2:
                     /*ARRET CLIENT */
                     msgrcv(file_id, &message, sizeof(message) - sizeof(long), 4,
@@ -154,5 +207,6 @@ int main(void) {
             }
         }
     }
+
     return 0;
 }
