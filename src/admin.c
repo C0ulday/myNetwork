@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <unistd.h>
 
 #include "../header/fonctions.h"
 #include "../header/types.h"
@@ -98,8 +99,11 @@ int main(void) {
                     perror("msgsnd");
                     exit(EXIT_FAILURE);
                 }
+                // Attendre 1 seconde pour laisser le serveur récupérer la
+                // table m.à.j.
+                sleep(1);
                 // L'admin réucprère la table m.à.j. du serveur
-                if (msgrcv(file_id, &table, sizeof(Table_Adresse), 2, 0) ==
+                if (msgrcv(file_id, &table, sizeof(Table_Adresse), 6, 0) ==
                     -1) {
                     perror("msgrcv");
                     exit(EXIT_FAILURE);
@@ -112,6 +116,50 @@ int main(void) {
 
             break;
         case 3:
+            /*ARRÊT CLIENT*/
+            if (table.nombre_clients > 0) {
+                printf("Quel client souhaitez-vous arrêter ?\n");
+                // Afficher la liste des clients
+                for (int i = 0; i < table.nombre_clients; i++) {
+                    printf("( ツ ) Client %d : %u.%u.%u.%u\n",
+                           table.clients[i].num,
+                           table.clients[i].adresseIP.adresse[0],
+                           table.clients[i].adresseIP.adresse[1],
+                           table.clients[i].adresseIP.adresse[2],
+                           table.clients[i].adresseIP.adresse[3]);
+                }
+                // Demander à l'utilisateur de choisir un client
+                int client_a_arreter = 0;
+                printf(">>");
+                scanf("%d", &client_a_arreter);
+                client_a_arreter--;
+                // Supprimer le client
+                if (client_a_arreter <= 0 ||
+                    nullClient(&table, client_a_arreter) == -1) {
+                    printf("Client non trouvé !\n");
+                    printf(">>");
+                    break;
+                }
+                // Envoie du client supprimé au serveur
+                sprintf(buffer, "Le client % d: %u.%u.%u.%u a été supprimé.\n ",
+                        table.clients[client_a_arreter].num,
+                        table.clients[client_a_arreter].adresseIP.adresse[0],
+                        table.clients[client_a_arreter].adresseIP.adresse[1],
+                        table.clients[client_a_arreter].adresseIP.adresse[2],
+                        table.clients[client_a_arreter].adresseIP.adresse[3]);
+                table.type = 3;
+                suppClient(&table, &table.clients[client_a_arreter].adresseIP);
+                // Type 3 = arrêt de client
+                table.type = 3;
+                if (msgsnd(file_id, &table, sizeof(Table_Adresse), 0) == -1) {
+                    perror("msgsnd");
+                    exit(EXIT_FAILURE);
+                }
+                printf(">>");
+            } else {
+                printf("Aucun client à arrêter !\n");
+                printf(">>");
+            }
             break;
         case 4:
             break;

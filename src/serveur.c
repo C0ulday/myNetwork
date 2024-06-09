@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <unistd.h>
 
 #include "../header/fonctions.h"
 #include "../header/types.h"
@@ -60,10 +61,17 @@ int main(void) {
 
     while (1) {
 
-        if (msgrcv(file_id, &table, sizeof(Table_Adresse), 2, 0) == -1) {
-            perror("msgrcv");
-            exit(EXIT_FAILURE);
+        /*CHOIX 1 - LANCEMENT SERVEUR*/
+        if (msgrcv(file_id, &table, sizeof(Table_Adresse), 1, IPC_NOWAIT) !=
+            -1) {
+            printf("( !! ) Je suis déjà lancé !\n");
+            printf("En attente de requêtes...\n");
         }
+        /*CHOIX 2 - AJOUT CLIENT*/
+        // Le message est envoyé sans attendre forcément de réponse :
+        // non-bloquant
+        msgrcv(file_id, &table, sizeof(Table_Adresse), 2, IPC_NOWAIT);
+
         if (table.type == 2) {
             printf("( ! ) Nouvelle requête : Allocation d'une adresse IP "
                    "client\n");
@@ -75,10 +83,23 @@ int main(void) {
                    table.clients[index_client].adresseIP.adresse[2],
                    table.clients[index_client].adresseIP.adresse[3]);
             // Le serveur renvoie la table m.à.j à l'admin
+            // Type = 6 est le type par défaut
+            // Cette affectation permet de sortir du càs Type =2
+            table.type = 6;
             if (msgsnd(file_id, &table, sizeof(Table_Adresse), 0) == -1) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
+            // Le serveur attend 1 seconde pour laisser l'admin récupérer la
+            // table m.à.j
+            sleep(1);
+        }
+        /*CHOIX 3 - SUPPRESSION CLIENT*/
+        sleep(1);
+        msgrcv(file_id, &table, sizeof(Table_Adresse), 3, IPC_NOWAIT);
+        if (table.type == 3) {
+            printf("( - ) Nouvelle requête : Suppression d'un client\n");
+            printf("%s", table.buffer);
         }
     }
 
