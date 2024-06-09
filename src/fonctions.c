@@ -70,11 +70,6 @@ void initializeTableClients(Table_Adresse *table, int nombre_clients_max) {
 
     table->type = 0; // Initialisation de type, ajuster selon vos besoins
     table->nombre_clients = 0;
-    table->clients = (Client *)malloc(nombre_clients_max * sizeof(Client));
-    if (table->clients == NULL) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
 
     // Initialiser les adresses IP des clients à 0
     for (int i = 0; i < nombre_clients_max; i++) {
@@ -146,7 +141,7 @@ int addClient(Table_Adresse *table) {
     }
     generateAdresseIP(*table, &ip);
     table->clients[i].adresseIP = ip;
-    table->clients[i].num = i + 1;
+    table->clients[i].num = n + 1;
     table->nombre_clients++;
 
     return i;

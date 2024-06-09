@@ -80,8 +80,7 @@ int main(void) {
             printf("Lancement du serveur...\n");
             // Type 1 = message normal
             table.type = 1;
-            if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long),
-                       0) == -1) {
+            if (msgsnd(file_id, &table, sizeof(Table_Adresse), 0) == -1) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
@@ -95,9 +94,14 @@ int main(void) {
                 // Envoie au serveur du nouveau client
                 // Type 2 = ajout de client
                 table.type = 2;
-                if (msgsnd(file_id, &table,
-                           sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
+                if (msgsnd(file_id, &table, sizeof(Table_Adresse), 0) == -1) {
                     perror("msgsnd");
+                    exit(EXIT_FAILURE);
+                }
+                // L'admin réucprère la table m.à.j. du serveur
+                if (msgrcv(file_id, &table, sizeof(Table_Adresse), 2, 0) ==
+                    -1) {
+                    perror("msgrcv");
                     exit(EXIT_FAILURE);
                 }
                 printf(">>");
@@ -113,7 +117,6 @@ int main(void) {
             break;
         case 5:
             printf("A bientôt !");
-            free(table.clients);
             if (msgctl(file_id, IPC_RMID, NULL) == -1) {
                 perror("msgctl");
             }
