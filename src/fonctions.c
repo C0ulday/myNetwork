@@ -81,22 +81,41 @@ void initializeTableClients(Table_Adresse *table, int nombre_clients_max) {
 }
 /**
  * @brief Vérifie que l'adresse IP d'un client est nulle, c.à.d 0.0.0.0.
- * @param table Pointeur vers tableau des clients.
+ * @param table Tableau des clients.
  * @param index_client Indice du client à vérifier.
  * @return 1 si l'adresse est nulle, -1 sinon.
  */
-int nullClient(Table_Adresse *table, int index_client) {
+int nullClient(Table_Adresse table, int index_client) {
     int client_existe =
-        existAdresseIP(*table, table->clients[index_client].adresseIP);
+        existAdresseIP(table, table.clients[index_client].adresseIP);
     if (client_existe != -1) {
-        if (table->clients[client_existe].adresseIP.adresse[0] == 0 &&
-            table->clients[client_existe].adresseIP.adresse[1] == 0 &&
-            table->clients[client_existe].adresseIP.adresse[2] == 0 &&
-            table->clients[client_existe].adresseIP.adresse[3] == 0) {
+        if (table.clients[client_existe].adresseIP.adresse[0] == 0 &&
+            table.clients[client_existe].adresseIP.adresse[1] == 0 &&
+            table.clients[client_existe].adresseIP.adresse[2] == 0 &&
+            table.clients[client_existe].adresseIP.adresse[3] == 0) {
             return 1;
         }
     }
     return -1;
+}
+
+/**
+ * @brief Affiche les clients d'adresse IP non nulle.
+ * @param table Pointeur vers tableau des clients.
+ * @return Void : affiche directement les clients d'adresse IP non nulle.
+ */
+void printClient(Table_Adresse table) {
+
+    for (int i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
+        if (nullClient(table, i) != 1) {
+            printf("( ツ ) Client %d : %u.%u.%u.%u\n", table.clients[i].num,
+                   table.clients[i].adresseIP.adresse[0],
+                   table.clients[i].adresseIP.adresse[1],
+                   table.clients[i].adresseIP.adresse[2],
+                   table.clients[i].adresseIP.adresse[3]);
+        }
+        continue;
+    }
 }
 
 /*ADRESSES IP*/
@@ -147,10 +166,9 @@ void generateAdresseIP(Table_Adresse table, Adresse_IP *ip) {
 int addClient(Table_Adresse *table) {
 
     Adresse_IP ip;
-    int n = table->nombre_clients;
     int i = 0;
 
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
         if (table->clients[i].adresseIP.adresse[0] == 0 &&
             table->clients[i].adresseIP.adresse[1] == 0 &&
             table->clients[i].adresseIP.adresse[2] == 0 &&
@@ -160,7 +178,7 @@ int addClient(Table_Adresse *table) {
     }
     generateAdresseIP(*table, &ip);
     table->clients[i].adresseIP = ip;
-    table->clients[i].num = n + 1;
+    table->clients[i].num = i + 1;
     table->nombre_clients++;
 
     return i;
@@ -182,4 +200,5 @@ void suppClient(Table_Adresse *table, Adresse_IP *ip) {
         }
     }
     table->clients[client_existe].num = 0;
+    table->nombre_clients--;
 }

@@ -61,11 +61,14 @@ int main(void) {
     }
 
     // Lire l'entrée de l'utilisateur
+    print_menu(menu_title, menu_items, item_count);
     printf(">>");
     while (1) {
         while (scanf(" %d", &reponse_user) == 0) {
             // L'entrée n'est pas un entier valide
-            printf("Entrée non valide. Veuillez entrer un entier.\n");
+            printf(
+                "Entrée non valide. Veuillez entrer un entier entre 1 et 6.\n");
+            print_menu(menu_title, menu_items, item_count);
             printf(">>");
             scanf("%d", &reponse_user);
 
@@ -87,6 +90,8 @@ int main(void) {
                 exit(EXIT_FAILURE);
             }
             printf("Serveur lancé avec succès !\n");
+            printf("\n");
+            print_menu(menu_title, menu_items, item_count);
             printf(">>");
             break;
         case 2:
@@ -110,9 +115,13 @@ int main(void) {
                     perror("msgrcv");
                     exit(EXIT_FAILURE);
                 }
+                printf("\n");
+                print_menu(menu_title, menu_items, item_count);
                 printf(">>");
             } else {
                 printf("Nombre limite de clients atteint !\n");
+                printf("\n");
+                print_menu(menu_title, menu_items, item_count);
                 printf(">>");
             }
 
@@ -122,14 +131,7 @@ int main(void) {
             if (table.nombre_clients > 0) {
                 printf("Quel client souhaitez-vous arrêter ?\n");
                 // Afficher la liste des clients
-                for (int i = 0; i < table.nombre_clients; i++) {
-                    printf("( ツ ) Client %d : %u.%u.%u.%u\n",
-                           table.clients[i].num,
-                           table.clients[i].adresseIP.adresse[0],
-                           table.clients[i].adresseIP.adresse[1],
-                           table.clients[i].adresseIP.adresse[2],
-                           table.clients[i].adresseIP.adresse[3]);
-                }
+                printClient(table);
                 // Demander à l'utilisateur de choisir un client
                 int client_a_arreter = 0;
                 printf(">>");
@@ -137,8 +139,10 @@ int main(void) {
                 client_a_arreter--;
                 // Supprimer le client
                 if (client_a_arreter < 0 ||
-                    nullClient(&table, client_a_arreter) == 1) {
+                    nullClient(table, client_a_arreter) == 1) {
                     printf("Client non trouvé !\n");
+                    printf("\n");
+                    print_menu(menu_title, menu_items, item_count);
                     printf(">>");
                     break;
                 }
@@ -157,16 +161,36 @@ int main(void) {
                     perror("msgsnd");
                     exit(EXIT_FAILURE);
                 }
+                printf("\n");
+                print_menu(menu_title, menu_items, item_count);
                 printf(">>");
             } else {
                 printf("Aucun client à arrêter !\n");
+                printf("\n");
+                print_menu(menu_title, menu_items, item_count);
                 printf(">>");
             }
             break;
         case 4:
+            /*AFFICHER LISTE CLIENTS*/
+            msgrcv(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 6,
+                   IPC_NOWAIT);
+            printf("LISTE DES CLIENTS\n");
+            if (table.nombre_clients == 0) {
+                printf("Aucun client enregistré !\n");
+                printf("\n");
+                print_menu(menu_title, menu_items, item_count);
+                printf(">>");
+                break;
+            }
+            printf("Nombre de clients : %d\n", table.nombre_clients);
+            printClient(table);
+            printf("\n");
+            print_menu(menu_title, menu_items, item_count);
+            printf(">>");
             break;
         case 5:
-            printf("A bientôt !");
+            printf("( ᵔ ᵕ ᵔ ) A bientôt !\n");
             // Envoie un signal au serveur pour qu'il se termine
             table.type = 5;
             msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 0);
@@ -176,6 +200,8 @@ int main(void) {
             }
             exit(EXIT_SUCCESS);
         default:
+            printf("凸( •̀_•́ )凸 Arrêtez de faire le fou/la folle !\n");
+            print_menu(menu_title, menu_items, item_count);
             printf(">>");
         }
     }
