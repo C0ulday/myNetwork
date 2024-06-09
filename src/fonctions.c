@@ -202,3 +202,9 @@ void suppClient(Table_Adresse *table, Adresse_IP *ip) {
     table->clients[client_existe].num = 0;
     table->nombre_clients--;
 }
+
+/*===================================================
+
+FONCTIONS CLIENT
+
+===================================================*/

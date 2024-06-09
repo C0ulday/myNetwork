@@ -61,7 +61,6 @@ int main(void) {
     }
 
     // Lire l'entrée de l'utilisateur
-    print_menu(menu_title, menu_items, item_count);
     printf(">>");
     while (1) {
         while (scanf(" %d", &reponse_user) == 0) {
