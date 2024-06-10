@@ -1,12 +1,13 @@
+
+#include "../header/fonctions.h"
+#include "../header/types.h"
+
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <unistd.h>
-
-#include "../header/fonctions.h"
-#include "../header/types.h"
 
 /**
  * @file admin.c
@@ -190,7 +191,6 @@ int main(void) {
             /*AFFICHER LISTE CLIENTS*/
             msgrcv(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 6,
                    IPC_NOWAIT);
-            printf("LISTE DES CLIENTS\n");
             if (table.nombre_clients == 0) {
                 printf("Aucun client enregistré !\n");
                 printf("\n");
@@ -198,7 +198,6 @@ int main(void) {
                 printf(">>");
                 break;
             }
-            printf("Nombre de clients : %d\n", table.nombre_clients);
             printClient(table);
             printf("\n");
             print_menu(menu_title, menu_items, item_count);
@@ -207,12 +206,8 @@ int main(void) {
         case 5:
             printf("( ᵔ ᵕ ᵔ ) A bientôt !\n");
             // Envoie un signal au serveur pour qu'il se termine
-            table.type = 5;
-            msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 0);
-            sleep(1);
-            if (msgctl(file_id, IPC_RMID, NULL) == -1) {
-                perror("msgctl");
-            }
+            kill_processes_by_name("./serveur");
+            kill_processes_by_name("./client");
             exit(EXIT_SUCCESS);
         default:
             printf("凸( •̀_•́ )凸 Arrêtez de faire le fou/la folle !\n");

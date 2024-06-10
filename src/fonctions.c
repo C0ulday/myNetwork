@@ -1,10 +1,16 @@
+#include "../header/fonctions.h"
+#include "../header/types.h"
+
+#include <dirent.h>
+#include <math.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <time.h>
-
-#include "../header/fonctions.h"
-#include "../header/types.h"
+#include <unistd.h>
 
 /**
  * @file fonctions.c
@@ -12,9 +18,7 @@
  */
 
 /*===================================================
-
 FONCTIONS ADMIN
-
 ===================================================*/
 /*MENU*/
 
@@ -49,9 +53,7 @@ void print_menu(const char *title, const char items[][MENU_ITEM_LENGTH],
 }
 
 /*===================================================
-
 FONCTIONS SERVEUR
-
 ===================================================*/
 /*TABLE ADRESSE*/
 /**
@@ -87,18 +89,12 @@ void initializeTableClients(Table_Adresse *table, int nombre_clients_max) {
  */
 int nullClient(Table_Adresse table, int index_client) {
 
-    int result = -1;
-    int client_existe =
-        existAdresseIP(table, table.clients[index_client].adresseIP);
-    if (client_existe != -1) {
-        if (table.clients[client_existe].adresseIP.adresse[0] == 0 &&
-            table.clients[client_existe].adresseIP.adresse[1] == 0 &&
-            table.clients[client_existe].adresseIP.adresse[2] == 0 &&
-            table.clients[client_existe].adresseIP.adresse[3] == 0) {
-            result = 1;
-        }
+    Adresse_IP ip = table.clients[index_client].adresseIP;
+    if (ip.adresse[0] == 0 && ip.adresse[1] == 0 && ip.adresse[2] == 0 &&
+        ip.adresse[3] == 0) {
+        return 1; // Client avec une adresse IP nulle trouvé
     }
-    return result;
+    return -1;
 }
 
 /**
@@ -108,9 +104,11 @@ int nullClient(Table_Adresse table, int index_client) {
  */
 void printClient(Table_Adresse table) {
 
+    printf("LISTE DES CLIENTS\n");
+    printf("Nombre de clients : %d\n", table.nombre_clients);
     for (int i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
-        printf("val i : %dval :%d\n", i, nullClient(table, i));
-        if (nullClient(table, i) != 1) {
+        if (nullClient(table, i) == -1) {
+
             printf("( ツ ) Client %d : %u.%u.%u.%u\n", table.clients[i].num,
                    table.clients[i].adresseIP.adresse[0],
                    table.clients[i].adresseIP.adresse[1],
@@ -341,4 +339,217 @@ Output *LZ78(char *message) {
     }
 
     return outputs;
+}
+/*CODAGE HAMMING & ERREUR SERVEUR*/
+
+/**
+ * @brief Fonction pour générer une erreur aléatoire dans les données.
+ * La fonction prend en paramètre un tableau d'entiers représentant les données
+ * à modifier. Elle génère un nombre aléatoire entre 0 et 2 inclus, et modifie
+ * une des valeurs du tableau en fonction de ce nombre. Si le nombre généré est
+ * 1, la valeur correspondante dans le tableau est inversée. Si le nombre généré
+ * est différent de 1, aucune modification n'est effectuée. La fonction utilise
+ * le générateur de nombres aléatoires de la bibliothèque standard.
+ *
+ * @param data7 Le tableau d'entiers représentant les données à modifier.
+ */
+void errorServeur(int *data7) {
+    srand(time(NULL)); // Initialisation du générateur de nombres aléatoires
+
+    int i;
+    int comp = 99;
+    for (i = 0; i < 7; i++) {
+        if (comp == 100) {
+            int j = rand() % 3;
+            printf("%d \n", j);
+            if (data7[i] == 1 && j == 1) {
+                data7[i] = 0;
+            } else if (j == 1) {
+                data7[i] = 1;
+            }
+            comp = -1;
+        }
+        comp++;
+    }
+}
+
+/**
+ * @brief Fonction pour effectuer le codage de Hamming (7,4).
+ * La fonction prend en paramètre un tableau d'entiers représentant les données
+ * à coder, et un tableau d'entiers pour stocker les données codées. La fonction
+ * calcule les bits de parité et construit le mot de sortie en utilisant le
+ * codage de Hamming (7,4).
+ *
+ * @param data4 Les données à coder.
+ * @param encoded7 Le tableau pour stocker les données codées.
+ */
+void encodeHamming(const int *data4, int *encoded7) {
+    // Calcul des bits de parité
+    encoded7[2] = data4[0] ^ data4[1] ^ data4[3]; // P1
+    encoded7[4] = data4[0] ^ data4[2] ^ data4[3]; // P2
+    encoded7[5] = data4[1] ^ data4[2] ^ data4[3]; // P3
+
+    // Construction du mot de sortie
+    encoded7[0] = data4[0];
+    encoded7[1] = data4[1];
+    encoded7[3] = data4[2];
+    encoded7[6] = data4[3];
+}
+
+/**
+ * @brief Fonction pour effectuer le décodage de Hamming (7,4).
+ * La fonction prend en paramètre un tableau d'entiers représentant les données
+ * codées, et un tableau d'entiers pour stocker les données décodées. La
+ * fonction calcule les bits de parité, détecte et corrige les erreurs
+ * éventuelles, et construit les données décodées en utilisant le décodage de
+ * Hamming (7,4).
+ *
+ * @param encoded7 Les données codées.
+ * @param decoded4 Le tableau pour stocker les données décodées.
+ */
+void decodageHamming(const int *encoded7, int *decoded4) {
+    // Copie des données codées dans un autre tableau
+    int decoded7[7];
+    for (int i = 0; i < 7; ++i) {
+        decoded7[i] = encoded7[i];
+    }
+
+    // Calcul des bits de parité
+    int p1 = decoded7[2];
+    int p2 = decoded7[4];
+    int p3 = decoded7[5];
+
+    // Calcul de la position de l'erreur
+    int erreur = p1 * 1 + p2 * 2 + p3 * 4;
+
+    // Correction de l'erreur (si présente)
+    if (erreur != 0) {
+        printf("Erreur détectée à la position : %d\n", erreur);
+        // Inversion du bit erroné
+        decoded7[erreur - 1] = !decoded7[erreur - 1];
+    }
+
+    // Construction des données décodées
+    decoded4[0] = decoded7[0];
+    decoded4[1] = decoded7[1];
+    decoded4[2] = decoded7[3];
+    decoded4[3] = decoded7[6];
+}
+
+/*===================================================
+FONCTIONS UTILISES & DIVERSES
+===================================================*/
+
+/**
+ * @brief Convertit un entier en sa représentation binaire.
+ *
+ * @param num L'entier à convertir.
+ * @return Un pointeur vers la représentation binaire de l'entier.
+ */
+void intToBinaire(int *binary, int num) {
+    for (int i = 7; i >= 0; --i) {
+        binary[i] = (num >> i) & 1;
+    }
+}
+
+/**
+ * Convertit un caractère en binaire.
+ *
+ * @param c Le caractère à convertir.
+ * @return Un pointeur vers un tableau contenant la représentation binaire du
+ * caractère.
+ */
+void charToBinaire(int *binary, char c) {
+    for (int i = 7; i >= 0; --i) {
+        binary[i] = (c >> i) & 1;
+    }
+}
+
+/**
+ * Concatène deux tableaux d'entiers en un seul tableau.
+ *
+ * @param tab1 Le premier tableau d'entiers.
+ * @param taille1 La taille du premier tableau.
+ * @param tab2 Le deuxième tableau d'entiers.
+ * @param taille2 La taille du deuxième tableau.
+ * @return Un pointeur vers le tableau concaténé.
+ */
+int *concatenateTableaux(const int *tab1, int taille1, const int *tab2,
+                         int taille2) {
+    int *concatene = (int *)malloc(
+        (taille1 + taille2) *
+        sizeof(int)); // Allouer de la mémoire pour le nouveau tableau
+
+    // Copier les éléments du premier tableau dans le nouveau tableau
+    for (int i = 0; i < taille1; ++i) {
+        concatene[i] = tab1[i];
+    }
+
+    // Copier les éléments du deuxième tableau dans le nouveau tableau
+    for (int i = 0; i < taille2; ++i) {
+        concatene[taille1 + i] = tab2[i];
+    }
+
+    return concatene; // Retourner le tableau concaténé
+}
+/**
+ * @brief Tue tous les processus avec un nom spécifique.
+ *
+ * Cette fonction recherche les processus avec le nom donné dans le
+ * répertoire /proc et les tue en utilisant le signal SIGKILL. Elle itère à
+ * travers tous les répertoires dans /proc et vérifie si le nom du processus
+ * correspond au nom donné. Si une correspondance est trouvée, le processus
+ * est tué.
+ *
+ * @param process_name Le nom du processus à tuer.
+ * @return Void : tue directement les processus.
+ */
+void kill_processes_by_name(const char *process_name) {
+    DIR *dir;
+    struct dirent *entry;
+
+    if ((dir = opendir("/proc")) == NULL) {
+        perror("opendir(/proc)");
+        exit(EXIT_FAILURE);
+    }
+
+    struct stat statbuf;
+    char proc_path[256];
+
+    while ((entry = readdir(dir)) != NULL) {
+        char *endptr;
+        long pid = strtol(entry->d_name, &endptr, 10);
+
+        if (*endptr != '\0') {
+            continue; // Not a valid PID
+        }
+
+        snprintf(proc_path, sizeof(proc_path), "/proc/%ld", pid);
+        if (stat(proc_path, &statbuf) == -1) {
+            perror("stat");
+            continue;
+        }
+
+        if (!S_ISDIR(statbuf.st_mode)) {
+            continue; // Not a directory
+        }
+
+        FILE *cmdline_file;
+        char cmdline_path[256];
+        snprintf(cmdline_path, sizeof(cmdline_path), "/proc/%ld/cmdline", pid);
+        if ((cmdline_file = fopen(cmdline_path, "r")) != NULL) {
+            char cmdline[MAX_CMD_LENGTH];
+            if (fgets(cmdline, sizeof(cmdline), cmdline_file)) {
+                if (strstr(cmdline, process_name) != NULL) {
+                    printf("Killing process %ld (%s)\n", pid, cmdline);
+                    if (kill(pid, SIGKILL) == -1) {
+                        perror("kill");
+                    }
+                }
+            }
+            fclose(cmdline_file);
+        }
+    }
+
+    closedir(dir);
 }

@@ -31,6 +31,7 @@ int main(void) {
     Message message;
     Trame trame;
 
+    // Sémaphore pour permettre à différents clients d'utiliser ce même code
     int sem_id = semget(SEM_KEY, NOMBRE_CLIENTS_MAX, 0666);
     struct sembuf sem_op;
 
@@ -104,33 +105,11 @@ int main(void) {
                     case 'a':
 
                         printf("A quel ami souhaitez-vous envoyer ce "
-                               "message ?\n");
-                        message.type = 1;
-                        msgsnd(file_id, &message,
-                               sizeof(message) - sizeof(long), 0);
-                        sleep(1);
-                        msgrcv(file_id, &table,
-                               sizeof(Table_Adresse) - sizeof(long), 1,
-                               IPC_NOWAIT);
+                               "message ?\n N'hésitez pas à jeter un oeil à la "
+                               "liste dans admin !\n");
                         printClient(table);
                         printf(">>");
                         scanf("%d", &choix_client);
-                        if (choix_client == message.index) {
-                            printf("凸( •̀_•́ )凸 Bien tenté !\n");
-                            printf("\n");
-                            printClient(table);
-                            printf(">>");
-                            scanf("%d", &choix_client);
-                            break;
-                        } else if (choix_client < 0 ||
-                                   nullClient(table, choix_client) == 1) {
-                            printf("Client non trouvé !\n");
-                            printf("\n");
-                            print_menu(menu_title, menu_items, item_count);
-                            printf(">>");
-                            scanf("%d", &reponse_user);
-                            break;
-                        }
                         printf("( ! ) Traitement de la requête...\n");
                         printf("\tClient %d dit %s à Client %d\n",
                                message.index, message.buffer, choix_client);
@@ -145,17 +124,37 @@ int main(void) {
                         // Affichage du résultat de la compression
 
                         printf("Résultat de la compression LZ78 :\n");
-
+                        // Affichage LZ78
                         printf("%d\n", outputs->dico->nbCellules);
                         for (int i = 0; i <= outputs->dico->nbCellules; i++) {
-                            printf("(%d, %c)\n", outputs->bloc[i].index,
+                            printf("\t(%d, %c)\n", outputs->bloc[i].index,
                                    outputs->bloc[i].lettre);
-                        }
-                        // Libérer la mémoire allouée pour le dictionnaire
+                        };
+                        // // Codage Hamming
+                        // int index_bin[8], lettre_bin[8];
 
+                        // for (int i = 0; i <= outputs->dico->nbCellules; i++)
+                        // {
+                        //     intToBinaire(index_bin, outputs->bloc[i].index);
+                        //     for (int j = 0; j < 8; j++) {
+                        //         encodeHamming(index_bin[j], 0);
+                        //     }
+                        //     charToBinaire(lettre_bin,
+                        //     outputs->bloc[i].lettre);
+                        // }
+
+                        // Traitement de Hamming
+
+                        printf("Codage de Hamming...\n");
+
+                        sleep(10);
+
+                        // Libérer la mémoire allouée pour le dictionnaire
                         free(outputs->dico);
                         free(outputs->bloc);
                         free(outputs);
+                        sleep(10);
+
                         break;
                     case 'b':
                         break;

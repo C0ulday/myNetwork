@@ -1,3 +1,6 @@
+#include "../header/fonctions.h"
+#include "../header/types.h"
+
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,9 +8,6 @@
 #include <sys/msg.h>
 #include <sys/sem.h>
 #include <unistd.h>
-
-#include "../header/fonctions.h"
-#include "../header/types.h"
 
 /**
  * @file serveur.c
@@ -206,9 +206,10 @@ int main(void) {
             suppClient(&table, &table.clients[message.index].adresseIP);
         }
         /*REQUETE GENERAL DU CLIENT*/
-        // Si le client envoie reqûete type 1, le serveur renvoie la table
+        // Si le client envoie requête type 1, le serveur renvoie la table
         if (msgrcv(file_id_client, &message, sizeof(Message) - sizeof(long), 1,
                    IPC_NOWAIT) != -1) {
+            printf("coucou\n");
             printClient(table);
             if (msgsnd(file_id_client, &table,
                        sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
