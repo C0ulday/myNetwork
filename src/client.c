@@ -124,30 +124,39 @@ int main(void) {
                         // Affichage du résultat de la compression
 
                         printf("Résultat de la compression LZ78 :\n");
-                        // Affichage LZ78
+                        // Affichage LZ78 et Hamming
                         printf("%d\n", outputs->dico->nbCellules);
                         for (int i = 0; i <= outputs->dico->nbCellules; i++) {
+                            // Codage Hamming
+                            int index_bin[8], lettre_bin[8];
+                            int hamming[7];
+
                             printf("\t(%d, %c)\n", outputs->bloc[i].index,
                                    outputs->bloc[i].lettre);
-                        };
-                        // // Codage Hamming
-                        // int index_bin[8], lettre_bin[8];
+                            printf("(Bloc %d ) Encodage Hamming:", i + 1);
+                            intToBinaire(index_bin, outputs->bloc[i].index);
+                            encodeHamming(index_bin, hamming);
+                            printf("{");
+                            for (int j = 0; j < 7; j++) {
+                                printf("%d", hamming[j]);
+                            }
+                            printf("}\t");
 
-                        // for (int i = 0; i <= outputs->dico->nbCellules; i++)
-                        // {
-                        //     intToBinaire(index_bin, outputs->bloc[i].index);
-                        //     for (int j = 0; j < 8; j++) {
-                        //         encodeHamming(index_bin[j], 0);
-                        //     }
-                        //     charToBinaire(lettre_bin,
-                        //     outputs->bloc[i].lettre);
-                        // }
+                            charToBinaire(lettre_bin, outputs->bloc[i].lettre);
+                            encodeHamming(lettre_bin, hamming);
+
+                            printf("{");
+                            for (int j = 0; j < 7; j++) {
+                                printf("%d", hamming[j]);
+                            }
+                            printf("}\n");
+                        };
 
                         // Traitement de Hamming
 
                         printf("Codage de Hamming...\n");
 
-                        sleep(10);
+                        sleep(20);
 
                         // Libérer la mémoire allouée pour le dictionnaire
                         free(outputs->dico);

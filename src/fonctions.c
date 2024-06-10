@@ -466,33 +466,6 @@ void charToBinaire(int *binary, char c) {
 }
 
 /**
- * Concatène deux tableaux d'entiers en un seul tableau.
- *
- * @param tab1 Le premier tableau d'entiers.
- * @param taille1 La taille du premier tableau.
- * @param tab2 Le deuxième tableau d'entiers.
- * @param taille2 La taille du deuxième tableau.
- * @return Un pointeur vers le tableau concaténé.
- */
-int *concatenateTableaux(const int *tab1, int taille1, const int *tab2,
-                         int taille2) {
-    int *concatene = (int *)malloc(
-        (taille1 + taille2) *
-        sizeof(int)); // Allouer de la mémoire pour le nouveau tableau
-
-    // Copier les éléments du premier tableau dans le nouveau tableau
-    for (int i = 0; i < taille1; ++i) {
-        concatene[i] = tab1[i];
-    }
-
-    // Copier les éléments du deuxième tableau dans le nouveau tableau
-    for (int i = 0; i < taille2; ++i) {
-        concatene[taille1 + i] = tab2[i];
-    }
-
-    return concatene; // Retourner le tableau concaténé
-}
-/**
  * @brief Tue tous les processus avec un nom spécifique.
  *
  * Cette fonction recherche les processus avec le nom donné dans le
