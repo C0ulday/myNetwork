@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['existadresseip_0',['existAdresseIP',['../fonctions_8c.html#a785ba43672f6664623feefb750280472',1,'fonctions.c']]]
+  ['cellule_0',['Cellule',['../structCellule.html',1,'']]],
+  ['client_1',['Client',['../structClient.html',1,'']]],
+  ['client_2ec_2',['client.c',['../client_8c.html',1,'']]]
 ];

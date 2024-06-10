@@ -11,6 +11,7 @@
 #define MSG_SIZE 16
 #define SIZE_MOT_DICO 30
 #define MAX_MOTS_DICO 100
+#define USE_XTERM
 
 typedef struct {
     unsigned char adresse[4];

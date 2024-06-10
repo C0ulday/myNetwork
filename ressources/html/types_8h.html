@@ -101,6 +101,20 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMessage.html">Message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTrame.html">Trame</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crée une trame.  <a href="structTrame.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCellule.html">Cellule</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Réprésente un motif de caractères dans la réprésentation LZ78.  <a href="structCellule.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDico.html">Dico</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBloc.html">Bloc</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Est un bloc de la sortie de la compression LZ78.  <a href="structBloc.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutput.html">Output</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Est la sortie de la compression LZ78.  <a href="structOutput.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -110,6 +124,15 @@ Macros</h2></td></tr>
 <tr class="memitem:a299ffb74b818be524ba85f23e7978906"><td class="memItemLeft" align="right" valign="top"><a id="a299ffb74b818be524ba85f23e7978906" name="a299ffb74b818be524ba85f23e7978906"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SEM_KEY</b>&#160;&#160;&#160;1234</td></tr>
 <tr class="separator:a299ffb74b818be524ba85f23e7978906"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4d025ecf1bdbf8b244ca688df8e478d"><td class="memItemLeft" align="right" valign="top"><a id="ad4d025ecf1bdbf8b244ca688df8e478d" name="ad4d025ecf1bdbf8b244ca688df8e478d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MSG_SIZE</b>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:ad4d025ecf1bdbf8b244ca688df8e478d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fbf2a1e497662706e855042622333e4"><td class="memItemLeft" align="right" valign="top"><a id="a5fbf2a1e497662706e855042622333e4" name="a5fbf2a1e497662706e855042622333e4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIZE_MOT_DICO</b>&#160;&#160;&#160;30</td></tr>
+<tr class="separator:a5fbf2a1e497662706e855042622333e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e336de0c309a95cf274f7cee35443db"><td class="memItemLeft" align="right" valign="top"><a id="a1e336de0c309a95cf274f7cee35443db" name="a1e336de0c309a95cf274f7cee35443db"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_MOTS_DICO</b>&#160;&#160;&#160;100</td></tr>
+<tr class="separator:a1e336de0c309a95cf274f7cee35443db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
 <div class="textblock"><p >Contient les constantes et les structures définies. </p>

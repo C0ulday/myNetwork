@@ -86,6 +86,8 @@ void initializeTableClients(Table_Adresse *table, int nombre_clients_max) {
  * @return 1 si l'adresse est nulle, -1 sinon.
  */
 int nullClient(Table_Adresse table, int index_client) {
+
+    int result = -1;
     int client_existe =
         existAdresseIP(table, table.clients[index_client].adresseIP);
     if (client_existe != -1) {
@@ -93,10 +95,10 @@ int nullClient(Table_Adresse table, int index_client) {
             table.clients[client_existe].adresseIP.adresse[1] == 0 &&
             table.clients[client_existe].adresseIP.adresse[2] == 0 &&
             table.clients[client_existe].adresseIP.adresse[3] == 0) {
-            return 1;
+            result = 1;
         }
     }
-    return -1;
+    return result;
 }
 
 /**
@@ -107,6 +109,7 @@ int nullClient(Table_Adresse table, int index_client) {
 void printClient(Table_Adresse table) {
 
     for (int i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
+        printf("val i : %dval :%d\n", i, nullClient(table, i));
         if (nullClient(table, i) != 1) {
             printf("( ツ ) Client %d : %u.%u.%u.%u\n", table.clients[i].num,
                    table.clients[i].adresseIP.adresse[0],
@@ -167,8 +170,9 @@ int addClient(Table_Adresse *table) {
 
     Adresse_IP ip;
     int i = 0;
+    int n = table->nombre_clients;
 
-    for (i = 0; i < NOMBRE_CLIENTS_MAX; i++) {
+    for (i = 0; i < n; i++) {
         if (table->clients[i].adresseIP.adresse[0] == 0 &&
             table->clients[i].adresseIP.adresse[1] == 0 &&
             table->clients[i].adresseIP.adresse[2] == 0 &&

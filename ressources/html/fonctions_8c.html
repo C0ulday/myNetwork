@@ -121,6 +121,16 @@ Fonctions</h2></td></tr>
 <tr class="memitem:a1fb0214ea2924c1dd37bd25f92238a77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fonctions_8c.html#a1fb0214ea2924c1dd37bd25f92238a77">suppClient</a> (<a class="el" href="structTable__Adresse.html">Table_Adresse</a> *table, <a class="el" href="structAdresse__IP.html">Adresse_IP</a> *ip)</td></tr>
 <tr class="memdesc:a1fb0214ea2924c1dd37bd25f92238a77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime un client de la table en mettant son adresse à zéro.  <a href="fonctions_8c.html#a1fb0214ea2924c1dd37bd25f92238a77">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a1fb0214ea2924c1dd37bd25f92238a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acccad1dd1fd1e587d85c96cb0b8de6a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fonctions_8c.html#acccad1dd1fd1e587d85c96cb0b8de6a8">initialiserDico</a> (<a class="el" href="structDico.html">Dico</a> *dico, int taille)</td></tr>
+<tr class="separator:acccad1dd1fd1e587d85c96cb0b8de6a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7362d51d01086fab540ad92f39141b46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fonctions_8c.html#a7362d51d01086fab540ad92f39141b46">ajouterDansDico</a> (<a class="el" href="structDico.html">Dico</a> *dico, int index, char *mot)</td></tr>
+<tr class="separator:a7362d51d01086fab540ad92f39141b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04c6bbda85092a6bc5f4dbfa3ee86196"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fonctions_8c.html#a04c6bbda85092a6bc5f4dbfa3ee86196">DansDico</a> (<a class="el" href="structDico.html">Dico</a> *dico, char *element)</td></tr>
+<tr class="separator:a04c6bbda85092a6bc5f4dbfa3ee86196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0969d8e1da065804e5870e3e4a95ec1c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fonctions_8c.html#a0969d8e1da065804e5870e3e4a95ec1c">rechercheIndexDansDico</a> (<a class="el" href="structDico.html">Dico</a> *dico, char *mot)</td></tr>
+<tr class="separator:a0969d8e1da065804e5870e3e4a95ec1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa876b2c2a8aab24758ad24df24a6ce67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structOutput.html">Output</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fonctions_8c.html#aa876b2c2a8aab24758ad24df24a6ce67">LZ78</a> (char *message)</td></tr>
+<tr class="separator:aa876b2c2a8aab24758ad24df24a6ce67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
 <div class="textblock"><p >contient des fonctions utiles au programme. </p>
@@ -150,6 +160,86 @@ Fonctions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>La position du nouveau client dans la table. </dd></dl>
+
+</div>
+</div>
+<a id="a7362d51d01086fab540ad92f39141b46" name="a7362d51d01086fab540ad92f39141b46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7362d51d01086fab540ad92f39141b46">&#9670;&nbsp;</a></span>ajouterDansDico()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ajouterDansDico </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDico.html">Dico</a> *&#160;</td>
+          <td class="paramname"><em>dico</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>mot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Ajoute un mot au dictionnaire à l'index spécifié.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dico</td><td>Le dictionnaire auquel ajouter le mot. </td></tr>
+    <tr><td class="paramname">index</td><td>L'index auquel ajouter le mot. </td></tr>
+    <tr><td class="paramname">mot</td><td>Le mot à ajouter au dictionnaire. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a04c6bbda85092a6bc5f4dbfa3ee86196" name="a04c6bbda85092a6bc5f4dbfa3ee86196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04c6bbda85092a6bc5f4dbfa3ee86196">&#9670;&nbsp;</a></span>DansDico()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DansDico </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDico.html">Dico</a> *&#160;</td>
+          <td class="paramname"><em>dico</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>element</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Vérifie si un élément existe dans le dictionnaire.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dico</td><td>Le dictionnaire dans lequel effectuer la recherche. </td></tr>
+    <tr><td class="paramname">element</td><td>L'élément à rechercher. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>1 si l'élément est trouvé, 0 sinon. </dd></dl>
 
 </div>
 </div>
@@ -231,6 +321,42 @@ Fonctions</h2></td></tr>
 
 </div>
 </div>
+<a id="acccad1dd1fd1e587d85c96cb0b8de6a8" name="acccad1dd1fd1e587d85c96cb0b8de6a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acccad1dd1fd1e587d85c96cb0b8de6a8">&#9670;&nbsp;</a></span>initialiserDico()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initialiserDico </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDico.html">Dico</a> *&#160;</td>
+          <td class="paramname"><em>dico</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>taille</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Initialise le dictionnaire avec la taille spécifiée.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dico</td><td>Le dictionnaire à initialiser. </td></tr>
+    <tr><td class="paramname">taille</td><td>La taille du dictionnaire. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa24416dcf33d7e4f9d11a9904efe43eb" name="aa24416dcf33d7e4f9d11a9904efe43eb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa24416dcf33d7e4f9d11a9904efe43eb">&#9670;&nbsp;</a></span>initializeTableClients()</h2>
 
@@ -266,6 +392,32 @@ Fonctions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa876b2c2a8aab24758ad24df24a6ce67" name="aa876b2c2a8aab24758ad24df24a6ce67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa876b2c2a8aab24758ad24df24a6ce67">&#9670;&nbsp;</a></span>LZ78()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structOutput.html">Output</a> * LZ78 </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Compresse le message donné en utilisant l'algorithme LZ78.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>Le message à compresser. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>La sortie compressée. </dd></dl>
 
 </div>
 </div>
@@ -377,6 +529,43 @@ Fonctions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>Void : affiche directement les clients d'adresse IP non nulle. </dd></dl>
+
+</div>
+</div>
+<a id="a0969d8e1da065804e5870e3e4a95ec1c" name="a0969d8e1da065804e5870e3e4a95ec1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0969d8e1da065804e5870e3e4a95ec1c">&#9670;&nbsp;</a></span>rechercheIndexDansDico()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int rechercheIndexDansDico </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDico.html">Dico</a> *&#160;</td>
+          <td class="paramname"><em>dico</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>mot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Recherche l'index d'un mot dans le dictionnaire.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dico</td><td>Le dictionnaire dans lequel effectuer la recherche. </td></tr>
+    <tr><td class="paramname">mot</td><td>Le mot à rechercher. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>L'index du mot dans le dictionnaire, ou -1 s'il n'est pas trouvé. </dd></dl>
 
 </div>
 </div>

@@ -113,7 +113,14 @@ int main(void) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
-
+            // Le serveur se charge de lancer le nouveau client automatiquement
+            // si xterm est installé
+#ifdef USE_XTERM
+            if (system("xterm -e './client' &") != 0) {
+                perror("system");
+                exit(EXIT_FAILURE);
+            }
+#endif
             // Le serveur attend 1 seconde pour laisser l'admin récupérer la
             // table m.à.j
             sleep(1);
@@ -202,6 +209,7 @@ int main(void) {
         // Si le client envoie reqûete type 1, le serveur renvoie la table
         if (msgrcv(file_id_client, &message, sizeof(Message) - sizeof(long), 1,
                    IPC_NOWAIT) != -1) {
+            printClient(table);
             if (msgsnd(file_id_client, &table,
                        sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
                 perror("msgsnd");

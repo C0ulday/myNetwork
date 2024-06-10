@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['table_5fadresse_0',['Table_Adresse',['../structTable__Adresse.html',1,'']]],
-  ['types_2eh_1',['types.h',['../types_8h.html',1,'']]]
+  ['nullclient_0',['nullClient',['../fonctions_8c.html#a19861d82b762829f41dc2a6b32252c6b',1,'fonctions.c']]]
 ];

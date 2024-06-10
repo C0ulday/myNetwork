@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['suppclient_0',['suppClient',['../fonctions_8c.html#a1fb0214ea2924c1dd37bd25f92238a77',1,'fonctions.c']]]
+  ['nullclient_0',['nullClient',['../fonctions_8c.html#a19861d82b762829f41dc2a6b32252c6b',1,'fonctions.c']]]
 ];

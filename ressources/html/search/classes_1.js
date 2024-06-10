@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['client_0',['Client',['../structClient.html',1,'']]]
+  ['bloc_0',['Bloc',['../structBloc.html',1,'']]]
 ];

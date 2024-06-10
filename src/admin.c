@@ -31,7 +31,16 @@ int main(void) {
     int reponse_user;
     char buffer[64];
 
-    // Titre du menu
+    // Xterm présent sur la machine de l'utilisateur ?
+
+    printf("( ツ )_/ Salut toi ! Pas si vite, as-tu installé xterm sur ta "
+           "machine ? \nCela t'évitera de lancer  manuellement le Serveur et "
+           "ses Clients.n");
+
+    printf(
+        "( !! ) Si ce n'est pas le cas, tu devras donc lancer manuellement le "
+        "serveur et les clients.\n\n");
+
     const char *menu_title = "ADMIN - Menu Principal";
 
     // Items du menu
@@ -81,6 +90,13 @@ int main(void) {
 
             // Lancement d'un terminal externe avec une instance de serveur
             printf("Lancement du serveur...\n");
+#ifdef USE_XTERM
+            if (system("xterm -e './serveur' &") != 0) {
+                perror("system");
+                exit(EXIT_FAILURE);
+            }
+#endif
+
             // Type 1 = message normal
             table.type = 1;
             if (msgsnd(file_id, &table, sizeof(Table_Adresse) - sizeof(long),

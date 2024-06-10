@@ -1,0 +1,6 @@
+<map id="Output" name="Output">
+<area shape="rect" id="node1" title="Est la sortie de la compression LZ78." alt="" coords="48,184,115,211"/>
+<area shape="rect" id="node2" href="$structDico.html" title=" " alt="" coords="13,95,64,121"/>
+<area shape="rect" id="node3" href="$structCellule.html" title="Réprésente un motif de caractères dans la réprésentation LZ78." alt="" coords="5,5,72,32"/>
+<area shape="rect" id="node4" href="$structBloc.html" title="Est un bloc de la sortie de la compression LZ78." alt="" coords="88,95,139,121"/>
+</map>

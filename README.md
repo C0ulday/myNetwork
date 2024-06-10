@@ -16,7 +16,11 @@ Bienvenue dans la documentation de **I Make My Own Network**.
 @section install_sec Installation
 
 Suivez ces étapes pour installer le projet :
-Prérequis : **LINUX**, quelques neurones.
+Prérequis : **LINUX**, **XTERM**.
+- Étape 0: Vous pouvez installer xterm pour une meilleure expérience. Si c'est déjà fait seul lancer Admin suffira.
+Pour installer xterm sous LINUX : *sudo apt-get update*
+puis *sudo apt-get install xterm*.
+
 - Étape 1 : Télécharger les fichiers via **chamilo** ou via le repository **GitHub** de **c0ulday** nommé **myNetwork**.
 - Étape 2 : Compiler le projet à l'aide du Makefile en faisant : *make* dans le dossier *myNetwork/src*.
 

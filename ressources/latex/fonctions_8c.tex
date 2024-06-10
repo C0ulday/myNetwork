@@ -36,7 +36,17 @@ void \mbox{\hyperlink{fonctions_8c_aecddfc93b1dec7a791777f145194477e}{generate\+
 int \mbox{\hyperlink{fonctions_8c_a9f94f47ff8e374be971fb1c6c3510622}{add\+Client}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$table)
 \begin{DoxyCompactList}\small\item\em Ajoute un nouveau client dans la table de clients avec une adresse IP valide. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fonctions_8c_a1fb0214ea2924c1dd37bd25f92238a77}{supp\+Client}} (\mbox{\hyperlink{structTable__Adresse}{Table\+\_\+\+Adresse}} $\ast$table, \mbox{\hyperlink{structAdresse__IP}{Adresse\+\_\+\+IP}} $\ast$ip)
-\begin{DoxyCompactList}\small\item\em Supprime un client de la table en mettant son adresse à zéro. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Supprime un client de la table en mettant son adresse à zéro. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonctions_8c_acccad1dd1fd1e587d85c96cb0b8de6a8}{initialiser\+Dico}} (\mbox{\hyperlink{structDico}{Dico}} $\ast$dico, int taille)
+\item 
+void \mbox{\hyperlink{fonctions_8c_a7362d51d01086fab540ad92f39141b46}{ajouter\+Dans\+Dico}} (\mbox{\hyperlink{structDico}{Dico}} $\ast$dico, int index, char $\ast$mot)
+\item 
+int \mbox{\hyperlink{fonctions_8c_a04c6bbda85092a6bc5f4dbfa3ee86196}{Dans\+Dico}} (\mbox{\hyperlink{structDico}{Dico}} $\ast$dico, char $\ast$element)
+\item 
+int \mbox{\hyperlink{fonctions_8c_a0969d8e1da065804e5870e3e4a95ec1c}{recherche\+Index\+Dans\+Dico}} (\mbox{\hyperlink{structDico}{Dico}} $\ast$dico, char $\ast$mot)
+\item 
+\mbox{\hyperlink{structOutput}{Output}} $\ast$ \mbox{\hyperlink{fonctions_8c_aa876b2c2a8aab24758ad24df24a6ce67}{LZ78}} (char $\ast$message)
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Description détaillée}
@@ -64,6 +74,41 @@ Ajoute un nouveau client à la table des adresses.
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
 La position du nouveau client dans la table. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_a7362d51d01086fab540ad92f39141b46}\label{fonctions_8c_a7362d51d01086fab540ad92f39141b46}} 
+\index{fonctions.c@{fonctions.c}!ajouterDansDico@{ajouterDansDico}}
+\index{ajouterDansDico@{ajouterDansDico}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{ajouterDansDico()}{ajouterDansDico()}}
+{\footnotesize\ttfamily void ajouter\+Dans\+Dico (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDico}{Dico}} $\ast$}]{dico,  }\item[{int}]{index,  }\item[{char $\ast$}]{mot }\end{DoxyParamCaption})}
+
+Ajoute un mot au dictionnaire à l\textquotesingle{}index spécifié.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em dico} & Le dictionnaire auquel ajouter le mot. \\
+\hline
+{\em index} & L\textquotesingle{}index auquel ajouter le mot. \\
+\hline
+{\em mot} & Le mot à ajouter au dictionnaire. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fonctions_8c_a04c6bbda85092a6bc5f4dbfa3ee86196}\label{fonctions_8c_a04c6bbda85092a6bc5f4dbfa3ee86196}} 
+\index{fonctions.c@{fonctions.c}!DansDico@{DansDico}}
+\index{DansDico@{DansDico}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{DansDico()}{DansDico()}}
+{\footnotesize\ttfamily int Dans\+Dico (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDico}{Dico}} $\ast$}]{dico,  }\item[{char $\ast$}]{element }\end{DoxyParamCaption})}
+
+Vérifie si un élément existe dans le dictionnaire.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em dico} & Le dictionnaire dans lequel effectuer la recherche. \\
+\hline
+{\em element} & L\textquotesingle{}élément à rechercher. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+1 si l\textquotesingle{}élément est trouvé, 0 sinon. 
 \end{DoxyReturn}
 \mbox{\Hypertarget{fonctions_8c_a785ba43672f6664623feefb750280472}\label{fonctions_8c_a785ba43672f6664623feefb750280472}} 
 \index{fonctions.c@{fonctions.c}!existAdresseIP@{existAdresseIP}}
@@ -109,6 +154,21 @@ Génère une adresse IP unique et l\textquotesingle{}assigne à un client dans l
 \begin{DoxyReturn}{Renvoie}
 Void \+: modifie directement ip. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_acccad1dd1fd1e587d85c96cb0b8de6a8}\label{fonctions_8c_acccad1dd1fd1e587d85c96cb0b8de6a8}} 
+\index{fonctions.c@{fonctions.c}!initialiserDico@{initialiserDico}}
+\index{initialiserDico@{initialiserDico}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{initialiserDico()}{initialiserDico()}}
+{\footnotesize\ttfamily void initialiser\+Dico (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDico}{Dico}} $\ast$}]{dico,  }\item[{int}]{taille }\end{DoxyParamCaption})}
+
+Initialise le dictionnaire avec la taille spécifiée.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em dico} & Le dictionnaire à initialiser. \\
+\hline
+{\em taille} & La taille du dictionnaire. \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{fonctions_8c_aa24416dcf33d7e4f9d11a9904efe43eb}\label{fonctions_8c_aa24416dcf33d7e4f9d11a9904efe43eb}} 
 \index{fonctions.c@{fonctions.c}!initializeTableClients@{initializeTableClients}}
 \index{initializeTableClients@{initializeTableClients}!fonctions.c@{fonctions.c}}
@@ -128,6 +188,22 @@ Initialise la table des clients avec un nombre maximum de clients donné.
 {\em nombre\+\_\+clients\+\_\+max} & Le nombre de clients que contiendra la table de clients. \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{fonctions_8c_aa876b2c2a8aab24758ad24df24a6ce67}\label{fonctions_8c_aa876b2c2a8aab24758ad24df24a6ce67}} 
+\index{fonctions.c@{fonctions.c}!LZ78@{LZ78}}
+\index{LZ78@{LZ78}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{LZ78()}{LZ78()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structOutput}{Output}} $\ast$ LZ78 (\begin{DoxyParamCaption}\item[{char $\ast$}]{message }\end{DoxyParamCaption})}
+
+Compresse le message donné en utilisant l\textquotesingle{}algorithme LZ78.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em message} & Le message à compresser. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+La sortie compressée. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{fonctions_8c_a19861d82b762829f41dc2a6b32252c6b}\label{fonctions_8c_a19861d82b762829f41dc2a6b32252c6b}} 
 \index{fonctions.c@{fonctions.c}!nullClient@{nullClient}}
 \index{nullClient@{nullClient}!fonctions.c@{fonctions.c}}
@@ -188,6 +264,24 @@ Affiche les informations d\textquotesingle{}un client à l\textquotesingle{}inde
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
 Void \+: affiche directement les clients d\textquotesingle{}adresse IP non nulle. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonctions_8c_a0969d8e1da065804e5870e3e4a95ec1c}\label{fonctions_8c_a0969d8e1da065804e5870e3e4a95ec1c}} 
+\index{fonctions.c@{fonctions.c}!rechercheIndexDansDico@{rechercheIndexDansDico}}
+\index{rechercheIndexDansDico@{rechercheIndexDansDico}!fonctions.c@{fonctions.c}}
+\doxysubsubsection{\texorpdfstring{rechercheIndexDansDico()}{rechercheIndexDansDico()}}
+{\footnotesize\ttfamily int recherche\+Index\+Dans\+Dico (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDico}{Dico}} $\ast$}]{dico,  }\item[{char $\ast$}]{mot }\end{DoxyParamCaption})}
+
+Recherche l\textquotesingle{}index d\textquotesingle{}un mot dans le dictionnaire.
+
+
+\begin{DoxyParams}{Paramètres}
+{\em dico} & Le dictionnaire dans lequel effectuer la recherche. \\
+\hline
+{\em mot} & Le mot à rechercher. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}index du mot dans le dictionnaire, ou -\/1 s\textquotesingle{}il n\textquotesingle{}est pas trouvé. 
 \end{DoxyReturn}
 \mbox{\Hypertarget{fonctions_8c_a1fb0214ea2924c1dd37bd25f92238a77}\label{fonctions_8c_a1fb0214ea2924c1dd37bd25f92238a77}} 
 \index{fonctions.c@{fonctions.c}!suppClient@{suppClient}}

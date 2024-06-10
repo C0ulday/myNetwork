@@ -7,29 +7,61 @@
 \DoxyCodeLine{3 }
 \DoxyCodeLine{9 \textcolor{preprocessor}{\#define NOMBRE\_CLIENTS\_MAX 3}}
 \DoxyCodeLine{10 \textcolor{preprocessor}{\#define SEM\_KEY 1234}}
-\DoxyCodeLine{11 }
-\DoxyCodeLine{12 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
-\DoxyCodeLine{13     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} adresse[4];}
-\DoxyCodeLine{14 \} \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}};}
-\DoxyCodeLine{15 }
-\DoxyCodeLine{16 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
-\DoxyCodeLine{17     \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}} adresseIP;}
-\DoxyCodeLine{18     \textcolor{keywordtype}{int} num;}
-\DoxyCodeLine{19 \} \mbox{\hyperlink{structClient}{Client}};}
-\DoxyCodeLine{20 }
-\DoxyCodeLine{21 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
-\DoxyCodeLine{22     \textcolor{keywordtype}{long} type;}
-\DoxyCodeLine{23     \textcolor{keywordtype}{int} nombre\_clients;}
-\DoxyCodeLine{24     \textcolor{keywordtype}{char} buffer[256];}
-\DoxyCodeLine{25     \mbox{\hyperlink{structClient}{Client}} clients[NOMBRE\_CLIENTS\_MAX];}
-\DoxyCodeLine{26 \} \mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}};}
-\DoxyCodeLine{27 }
-\DoxyCodeLine{28 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
-\DoxyCodeLine{29     \textcolor{keywordtype}{long} type;}
-\DoxyCodeLine{30     \textcolor{keywordtype}{int} index;}
-\DoxyCodeLine{31     \textcolor{keywordtype}{char} buffer[256];}
-\DoxyCodeLine{32 \} \mbox{\hyperlink{structMessage}{Message}};}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// !\_TYPES\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define MSG\_SIZE 16}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define SIZE\_MOT\_DICO 30}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define MAX\_MOTS\_DICO 100}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{16     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} adresse[4];}
+\DoxyCodeLine{17 \} \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{20     \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}} adresseIP;}
+\DoxyCodeLine{21     \textcolor{keywordtype}{int} num;}
+\DoxyCodeLine{22 \} \mbox{\hyperlink{structClient}{Client}};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{25     \textcolor{keywordtype}{long} type;}
+\DoxyCodeLine{26     \textcolor{keywordtype}{int} nombre\_clients;}
+\DoxyCodeLine{27     \textcolor{keywordtype}{char} buffer[256];}
+\DoxyCodeLine{28     \mbox{\hyperlink{structClient}{Client}} clients[NOMBRE\_CLIENTS\_MAX];}
+\DoxyCodeLine{29 \} \mbox{\hyperlink{structTable__Adresse}{Table\_Adresse}};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{32     \textcolor{keywordtype}{long} type;}
+\DoxyCodeLine{33     \textcolor{keywordtype}{int} index;}
+\DoxyCodeLine{34     \textcolor{keywordtype}{char} buffer[256];}
+\DoxyCodeLine{35 \} \mbox{\hyperlink{structMessage}{Message}};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{44 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{45     \textcolor{keywordtype}{long} type;}
+\DoxyCodeLine{46     \textcolor{keywordtype}{int} DU[MSG\_SIZE];}
+\DoxyCodeLine{47     \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}} senderAdresse;}
+\DoxyCodeLine{48     \mbox{\hyperlink{structAdresse__IP}{Adresse\_IP}} receiverAdresse;}
+\DoxyCodeLine{49     \textcolor{keywordtype}{int} nb\_transmissions;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \} \mbox{\hyperlink{structTrame}{Trame}};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{57 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{58     \textcolor{keywordtype}{int} index;}
+\DoxyCodeLine{59     \textcolor{keywordtype}{char} mot[SIZE\_MOT\_DICO];}
+\DoxyCodeLine{60 \} \mbox{\hyperlink{structCellule}{Cellule}};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{66 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{67     \mbox{\hyperlink{structCellule}{Cellule}} *cellule;}
+\DoxyCodeLine{68     \textcolor{keywordtype}{int} nbCellules;}
+\DoxyCodeLine{69 \} \mbox{\hyperlink{structDico}{Dico}};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{75 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{76     \textcolor{keywordtype}{int} index;}
+\DoxyCodeLine{77     \textcolor{keywordtype}{char} lettre;}
+\DoxyCodeLine{78 \} \mbox{\hyperlink{structBloc}{Bloc}};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{84 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{85     \mbox{\hyperlink{structDico}{Dico}} *dico;}
+\DoxyCodeLine{86     \mbox{\hyperlink{structBloc}{Bloc}} *bloc;}
+\DoxyCodeLine{87 \} \mbox{\hyperlink{structOutput}{Output}};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// !\_TYPES\_H\_}}
 
 \end{DoxyCode}

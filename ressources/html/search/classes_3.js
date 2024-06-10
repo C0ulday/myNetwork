@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['table_5fadresse_0',['Table_Adresse',['../structTable__Adresse.html',1,'']]]
+  ['dico_0',['Dico',['../structDico.html',1,'']]],
+  ['dictionnaire_1',['Dictionnaire',['../structDictionnaire.html',1,'']]]
 ];
