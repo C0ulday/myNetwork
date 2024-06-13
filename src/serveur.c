@@ -62,6 +62,9 @@ int main(void) {
         exit(EXIT_FAILURE);
     }
 
+    // Déclaration de la trame
+    Trame trame;
+
     /*LANCEMENT SERVEUR*/
     if (msgrcv(file_id, &table, sizeof(Table_Adresse) - sizeof(long), 1, 0) ==
         -1) {
@@ -208,16 +211,25 @@ int main(void) {
         /*REQUETE GENERAL DU CLIENT*/
         // Si le client envoie requête type 1, le serveur renvoie la table
         if (msgrcv(file_id_client, &message, sizeof(Message) - sizeof(long), 1,
-                   IPC_NOWAIT) != -1) {
-            printf("coucou\n");
-            printClient(table);
+                   IPC_NOWAIT) == 1) {
             if (msgsnd(file_id_client, &table,
                        sizeof(Table_Adresse) - sizeof(long), 0) == -1) {
                 perror("msgsnd");
                 exit(EXIT_FAILURE);
             }
         }
-    }
 
+        if (msgrcv(file_id_client, &trame, sizeof(Trame) - sizeof(long), 10,
+                   IPC_NOWAIT) != -1) {
+
+            int encode7[7];
+
+            for (int i = 0; i < trame.nb_blocs; i++) {
+                for (int j = 0; j < 7; j++) {
+                    encode7[i] = trame.DU[i];
+                }
+            }
+        }
+    }
     return 0;
 }

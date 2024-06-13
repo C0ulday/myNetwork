@@ -441,88 +441,62 @@ FONCTIONS UTILISES & DIVERSES
 ===================================================*/
 
 /**
- * @brief Convertit un entier en sa représentation binaire.
+ * Récupère les éléments d'un tableau entre les indices spécifiés.
  *
- * @param num L'entier à convertir.
- * @return Un pointeur vers la représentation binaire de l'entier.
+ * @param tab Le tableau source.
+ * @param start L'indice de début (inclus).
+ * @param end L'indice de fin (inclus).
+ * @param tailleResultat Un pointeur vers une variable pour stocker la taille du
+ * sous-tableau résultant.
+ * @return Un pointeur vers le sous-tableau contenant les éléments spécifiés.
  */
-void intToBinaire(int *binary, int num) {
-    for (int i = 7; i >= 0; --i) {
-        binary[i] = (num >> i) & 1;
-    }
-}
-
-/**
- * Convertit un caractère en binaire.
- *
- * @param c Le caractère à convertir.
- * @return Un pointeur vers un tableau contenant la représentation binaire du
- * caractère.
- */
-void charToBinaire(int *binary, char c) {
-    for (int i = 7; i >= 0; --i) {
-        binary[i] = (c >> i) & 1;
-    }
-}
-
-/**
- * @brief Tue tous les processus avec un nom spécifique.
- *
- * Cette fonction recherche les processus avec le nom donné dans le
- * répertoire /proc et les tue en utilisant le signal SIGKILL. Elle itère à
- * travers tous les répertoires dans /proc et vérifie si le nom du processus
- * correspond au nom donné. Si une correspondance est trouvée, le processus
- * est tué.
- *
- * @param process_name Le nom du processus à tuer.
- * @return Void : tue directement les processus.
- */
-void kill_processes_by_name(const char *process_name) {
-    DIR *dir;
-    struct dirent *entry;
-
-    if ((dir = opendir("/proc")) == NULL) {
-        perror("opendir(/proc)");
+int *getElements(int *tab, int start, int end, int *tailleResultat) {
+    if (tab == NULL) {
+        fprintf(stderr, "Le tableau source est NULL.\n");
         exit(EXIT_FAILURE);
     }
 
-    struct stat statbuf;
-    char proc_path[256];
+    if (start < 0 || end < start) {
+        fprintf(stderr, "Indices invalides : start = %d, end = %d.\n", start,
+                end);
+        exit(EXIT_FAILURE);
+    }
 
-    while ((entry = readdir(dir)) != NULL) {
-        char *endptr;
-        long pid = strtol(entry->d_name, &endptr, 10);
+    int taille = end - start + 1;
+    int *sub_tab = malloc(taille * sizeof(int));
+    if (sub_tab == NULL) {
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        exit(EXIT_FAILURE);
+    }
 
-        if (*endptr != '\0') {
-            continue; // Not a valid PID
-        }
+    for (int i = start; i <= end; i++) {
+        sub_tab[i - start] = tab[i];
+    }
 
-        snprintf(proc_path, sizeof(proc_path), "/proc/%ld", pid);
-        if (stat(proc_path, &statbuf) == -1) {
-            perror("stat");
-            continue;
-        }
+    *tailleResultat = taille;
+    return sub_tab;
 
-        if (!S_ISDIR(statbuf.st_mode)) {
-            continue; // Not a directory
-        }
-
-        FILE *cmdline_file;
-        char cmdline_path[256];
-        snprintf(cmdline_path, sizeof(cmdline_path), "/proc/%ld/cmdline", pid);
-        if ((cmdline_file = fopen(cmdline_path, "r")) != NULL) {
-            char cmdline[MAX_CMD_LENGTH];
-            if (fgets(cmdline, sizeof(cmdline), cmdline_file)) {
-                if (strstr(cmdline, process_name) != NULL) {
-                    printf("Killing process %ld (%s)\n", pid, cmdline);
-                    if (kill(pid, SIGKILL) == -1) {
-                        perror("kill");
-                    }
-                }
-            }
-            fclose(cmdline_file);
+    /**
+     * @brief Convertit un entier en sa représentation binaire.
+     *
+     * @param num L'entier à convertir.
+     * @return Un pointeur vers la représentation binaire de l'entier.
+     */
+    void intToBinaire(int *binary, int num) {
+        for (int i = 7; i >= 0; --i) {
+            binary[i] = (num >> i) & 1;
         }
     }
 
-    closedir(dir);
-}
+    /**
+     * Convertit un caractère en binaire.
+     *
+     * @param c Le caractère à convertir.
+     * @return Un pointeur vers un tableau contenant la représentation binaire
+     * du caractère.
+     */
+    void charToBinaire(int *binary, char c) {
+        for (int i = 7; i >= 0; --i) {
+            binary[i] = (c >> i) & 1;
+        }
+    }

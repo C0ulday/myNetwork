@@ -206,8 +206,6 @@ int main(void) {
         case 5:
             printf("( ᵔ ᵕ ᵔ ) A bientôt !\n");
             // Envoie un signal au serveur pour qu'il se termine
-            kill_processes_by_name("./serveur");
-            kill_processes_by_name("./client");
             exit(EXIT_SUCCESS);
         default:
             printf("凸( •̀_•́ )凸 Arrêtez de faire le fou/la folle !\n");
