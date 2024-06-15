@@ -108,13 +108,13 @@ int main(void) {
                         printf("A quel ami souhaitez-vous envoyer ce message "
                                "?\n N'hésitez pas à jeter un oeil à la liste "
                                "dans admin !\n");
-                        printClient(table);
                         printf(">>");
                         scanf("%d", &choix_client);
-                        printf("( ! ) Traitement de la requête...\n");
-                        printf("\tClient %d dit %s à Client %d\n",
-                               message.index, message.buffer, choix_client);
                         sprintf(message.buffer, "Salut !");
+
+                        printf("( ! ) Traitement de la requête...\n");
+                        printf("\tClient %d -> Client %d : %s\n",
+                               message.index + 1, choix_client, message.buffer);
 
                         printf("Compression du message...\n");
 
@@ -130,7 +130,7 @@ int main(void) {
                             // Codage Hamming
                             int index_bin[8], lettre_bin[8];
                             int hamming1[7], hamming2[7];
-                            printf("(Bloc %d ) Encodage Hamming:", i + 1);
+                            printf("(Bloc %d ) LZ78 :", i + 1);
                             printf("\t(%d, %c)\n", outputs->bloc[i].index,
                                    outputs->bloc[i].lettre);
 
@@ -180,20 +180,19 @@ int main(void) {
                         trame.id_senderAdresse = message.index;
 
                         trame.nb_blocs = compteur;
-                        trame.type = 10;
+                        trame.type = 2;
 
-                        // Envoie de la trame au serveur
                         if (msgsnd(file_id, &trame,
                                    sizeof(Trame) - sizeof(long), 0) == -1) {
                             perror("msgsnd");
-                            exit(EXIT_FAILURE);
                         }
 
                         // Libérer la mémoire allouée pour le dictionnaire
                         free(outputs->dico);
                         free(outputs->bloc);
                         free(outputs);
-
+                        printf("Encodage de Hamming...\n");
+                        sleep(1);
                         printf("Le message a été envoyé avec succès !\n");
 
                         printf("\n( ツ ) Je suis le client %s\n",

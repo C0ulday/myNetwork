@@ -36,7 +36,7 @@ int main(void) {
 
     printf("( ツ )_/ Salut toi ! Pas si vite, as-tu installé xterm sur ta "
            "machine ? \nCela t'évitera de lancer  manuellement le Serveur et "
-           "ses Clients.n");
+           "ses Clients.\n");
 
     printf(
         "( !! ) Si ce n'est pas le cas, tu devras donc lancer manuellement le "

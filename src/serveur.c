@@ -219,7 +219,7 @@ int main(void) {
             }
         }
 
-        if (msgrcv(file_id_client, &trame, sizeof(Trame) - sizeof(long), 10,
+        if (msgrcv(file_id_client, &trame, sizeof(Trame) - sizeof(long), 2,
                    IPC_NOWAIT) != -1) {
             printf("( !! ) Trame reçue de Client %d pour Client %d \n",
                    trame.id_senderAdresse + 1, trame.id_receiverAdresse + 1);
