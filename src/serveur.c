@@ -221,14 +221,100 @@ int main(void) {
 
         if (msgrcv(file_id_client, &trame, sizeof(Trame) - sizeof(long), 10,
                    IPC_NOWAIT) != -1) {
+            printf("( !! ) Trame reçue de Client %d pour Client %d \n",
+                   trame.id_senderAdresse + 1, trame.id_receiverAdresse + 1);
+            printf("( !! ) Décodage de la trame en cours...\n");
+            printf("\t\t Hamming ....\n");
 
-            int encode7[7];
-
-            for (int i = 0; i < trame.nb_blocs; i++) {
-                for (int j = 0; j < 7; j++) {
-                    encode7[i] = trame.DU[i];
-                }
+            Output *outputs =
+                (Output *)malloc(sizeof(Output) * trame.nb_blocs /
+                                 28); // Allouer pour tous les blocs
+            if (outputs == NULL) {
+                perror("malloc");
+                exit(EXIT_FAILURE);
             }
+
+            int temp[4];
+            int data[8];
+            int hamming[7];
+            int q = 0;
+            int i = 0;
+            while (i < trame.nb_blocs) {
+
+                // Décodage de l'index
+                for (int j = 0; j < 7; j++) {
+                    hamming[j] = trame.DU[i + j];
+                }
+                i = i + 7;
+                // Ajouter le bruit du serveur
+                errorServeur(hamming);
+                // Décodage de Hamming
+                decodeHamming(hamming, temp);
+
+                // On a décodé les 4 premiers bits du paquet de 8 bits
+                // réprésentant l'entier
+                for (int j = 0; j < 4; j++) {
+                    data[j] = temp[j];
+                }
+
+                // On décale i de 7 bits
+
+                for (int j = 0; j < 7; j++) {
+                    hamming[j] = trame.DU[i + j];
+                }
+                i = i + 7;
+                // Ajouter le bruit du serveur
+                errorServeur(hamming);
+                // Décodage de Hamming de la suite
+                decodeHamming(hamming, temp);
+
+                // on garde la suite des bits
+                for (int j = 7; j < 14; j++) {
+                    data[j] = temp[j];
+                }
+                // Conversion en entier
+                outputs->bloc[q].index = binToEntier(data);
+                printf("%d\n", outputs->bloc[q].index);
+
+                // Décodage de la lettre
+                for (int j = 0; j < 7; j++) {
+                    hamming[j] = trame.DU[i + j];
+                }
+                i = i + 7;
+                // Ajouter le bruit du serveur
+                errorServeur(hamming);
+                // Décodage de Hamming
+                decodeHamming(hamming, temp);
+
+                // On a décodé les 4 premiers bits du paquet de 8 bits
+                // réprésentant l'entier
+                for (int j = 0; j < 4; j++) {
+                    data[j] = temp[j];
+                }
+
+                // On décale i de 7 bits
+
+                for (int j = 0; j < 7; j++) {
+                    hamming[j] = trame.DU[i + j];
+                }
+                i = i + 7;
+                // Ajouter le bruit du serveur
+                errorServeur(hamming);
+                // Décodage de Hamming
+                decodeHamming(hamming, temp);
+                for (int j = 7; j < 14; j++) {
+                    data[j] = temp[j];
+                }
+                // Conversion en entier
+                outputs[q].bloc[q].lettre = binToChar(data);
+                printf("%c\n", outputs[q].bloc[q].lettre);
+
+                q++;
+            }
+
+            // Utilisation des données décodées dans outputs...
+
+            free(outputs); // Libérer la mémoire allouée
         }
     }
     return 0;

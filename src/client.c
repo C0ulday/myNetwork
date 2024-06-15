@@ -47,7 +47,6 @@ int main(void) {
     int reponse_user;
     int choix_client;
     char message_choix;
-    int compteur = 0;
 
     int cle_serveur = ftok("cle.txt", 2);
     int file_id = msgget(cle_serveur, 0666);
@@ -71,8 +70,8 @@ int main(void) {
     CHOIX UTILISATEUR MENU
     ===================================================*/
     while (1) {
-        if (msgrcv(file_id, &message, sizeof(message) - sizeof(long), 1, 0) !=
-            -1) {
+        if (msgrcv(file_id, &message, sizeof(message) - sizeof(long), 1,
+                   IPC_NOWAIT) != -1) {
             printf("( ツ ) Je suis le client %s\n", message.buffer);
             printf("Que puis-je fais pour vous ?\n");
             sem_op.sem_op = 1; // V operation
@@ -104,117 +103,108 @@ int main(void) {
 
                     switch (message_choix) {
                     case 'a':
+                        int compteur = 0;
 
-                        printf("A quel ami souhaitez-vous envoyer ce "
-                               "message ?\n N'hésitez pas à jeter un oeil à la "
-                               "liste dans admin !\n");
+                        printf("A quel ami souhaitez-vous envoyer ce message "
+                               "?\n N'hésitez pas à jeter un oeil à la liste "
+                               "dans admin !\n");
+                        printClient(table);
                         printf(">>");
                         scanf("%d", &choix_client);
-                        if (choix_client == message.index + 1) {
-                            printf("Bien tenté ! Vous ne pouvez pas vous "
-                                   "envoyer un message à "
-                                   "vous-même !\n");
-                            break;
-                        }
-
                         printf("( ! ) Traitement de la requête...\n");
-
-                        // On précise le message à envoyer
+                        printf("\tClient %d dit %s à Client %d\n",
+                               message.index, message.buffer, choix_client);
                         sprintf(message.buffer, "Salut !");
-                        printf("Mon index : %d\n", message.index);
-                        printf("\tJ'envoie %s à Client %d\n", message.buffer,
-                               choix_client);
 
                         printf("Compression du message...\n");
 
                         Output *outputs = LZ78(message.buffer);
-                        // Sleep pour rendre plus dynamique l'affichage
-                        sleep(1);
-                        printf("%d\n", outputs->dico->nbCellules);
-                        // Chaque bloc vaudra 32 bits (car 8 bits pour l'index
-                        // et 8 pour la lettre. Le codage de Hamming prendra
-                        // chaque 4 bits pour les convertir en 7bits)
-                        if (outputs->dico->nbCellules * 32 > MSG_SIZE) {
-                            printf("Le message est trop long !\n");
-                            sleep(6);
-                            break;
-                        }
+
                         // Affichage du résultat de la compression
+
                         printf("Résultat de la compression LZ78 :\n");
                         // Affichage LZ78 et Hamming
-                        sleep(5);
-
-                        int taille = 4;
-                        // Codage Hamming
-                        int index_bin[8], lettre_bin[8];
-                        int hamming_index[7];
-                        int hamming_lettre[7];
+                        printf("%d\n", outputs->dico->nbCellules);
 
                         for (int i = 0; i <= outputs->dico->nbCellules; i++) {
-
+                            // Codage Hamming
+                            int index_bin[8], lettre_bin[8];
+                            int hamming1[7], hamming2[7];
+                            printf("(Bloc %d ) Encodage Hamming:", i + 1);
                             printf("\t(%d, %c)\n", outputs->bloc[i].index,
                                    outputs->bloc[i].lettre);
-                            printf("(Bloc %d ) Encodage Hamming:", i + 1);
-                            printf("\n");
-                        }
 
-                        for (int i = 0; i <= outputs->dico->nbCellules; i++) {
-
-                            // Libérer la mémoire allouée pour le dictionnaire
-                            printf("Encapsulation des données...\n");
                             intToBinaire(index_bin, outputs->bloc[i].index);
+
+                            // Diviser index_bin en deux groupes de 4 bits
+                            int index_bin_part1[4] = {
+                                index_bin[0], index_bin[1], index_bin[2],
+                                index_bin[3]};
+                            int index_bin_part2[4] = {
+                                index_bin[4], index_bin[5], index_bin[6],
+                                index_bin[7]};
+
+                            // Encoder chaque groupe de 4 bits
+                            encodeHamming(index_bin_part1, hamming1);
+                            encodeHamming(index_bin_part2, hamming2);
+
+                            for (int j = 0; j < 7; j++) {
+                                trame.DU[compteur++] = hamming1[j];
+                            }
+                            for (int j = 0; j < 7; j++) {
+                                trame.DU[compteur++] = hamming2[j];
+                            }
+
                             charToBinaire(lettre_bin, outputs->bloc[i].lettre);
 
-                            // Entier
-                            encodeHamming(getElements(index_bin, 0, 3, &taille),
-                                          hamming_index);
+                            // Diviser lettre_bin en deux groupes de 4 bits
+                            int lettre_bin_part1[4] = {
+                                lettre_bin[0], lettre_bin[1], lettre_bin[2],
+                                lettre_bin[3]};
+                            int lettre_bin_part2[4] = {
+                                lettre_bin[4], lettre_bin[5], lettre_bin[6],
+                                lettre_bin[7]};
+
+                            // Encoder chaque groupe de 4 bits
+                            encodeHamming(lettre_bin_part1, hamming1);
+                            encodeHamming(lettre_bin_part2, hamming2);
 
                             for (int j = 0; j < 7; j++) {
-                                trame.DU[compteur++] = hamming_index[j];
+                                trame.DU[compteur++] = hamming1[j];
                             }
-
-                            encodeHamming(getElements(index_bin, 4, 7, &taille),
-                                          hamming_index);
-
                             for (int j = 0; j < 7; j++) {
-                                trame.DU[compteur++] = hamming_index[j];
-                            }
-                            // Lettre
-                            encodeHamming(
-                                getElements(lettre_bin, 0, 3, &taille),
-                                hamming_lettre);
-
-                            for (int j = 0; j < 7; j++) {
-                                trame.DU[compteur++] = hamming_lettre[j];
-                            }
-                            encodeHamming(
-                                getElements(lettre_bin, 4, 7, &taille),
-                                hamming_lettre);
-
-                            for (int j = 0; j < 7; j++) {
-                                trame.DU[compteur++] = hamming_lettre[j];
+                                trame.DU[compteur++] = hamming2[j];
                             }
                         }
-                        printf("coucou\n");
-                        sleep(4);
-
-                        // envoie des identifiants des clients au serveur
-                        trame.id_senderAdresse = message.index;
                         trame.id_receiverAdresse = choix_client - 1;
+                        trame.id_senderAdresse = message.index;
 
-                        trame.type = 10; // chiffre choisi de tel sorte à ne pas
-                                         // interférer avec les autres types
-                        // envoie de la trame au serveur
                         trame.nb_blocs = compteur;
-                        msgsnd(file_id, &trame, sizeof(Trame) - sizeof(long),
-                               0);
-                        compteur = 0;
+                        trame.type = 10;
 
+                        // Envoie de la trame au serveur
+                        if (msgsnd(file_id, &trame,
+                                   sizeof(Trame) - sizeof(long), 0) == -1) {
+                            perror("msgsnd");
+                            exit(EXIT_FAILURE);
+                        }
+
+                        // Libérer la mémoire allouée pour le dictionnaire
                         free(outputs->dico);
                         free(outputs->bloc);
                         free(outputs);
 
+                        printf("Le message a été envoyé avec succès !\n");
+
+                        printf("\n( ツ ) Je suis le client %s\n",
+                               message.buffer);
+                        printf("Que puis-je fais pour vous ?\n");
+                        printf("\n");
+                        print_menu(menu_title, menu_items, item_count);
+                        printf(">>");
+                        scanf("%d", &reponse_user);
                         break;
+
                     case 'b':
                         break;
                     case 'c':
@@ -265,5 +255,6 @@ int main(void) {
             }
         }
     }
+
     return 0;
 }

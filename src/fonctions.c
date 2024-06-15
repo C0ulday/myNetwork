@@ -351,9 +351,9 @@ Output *LZ78(char *message) {
  * est différent de 1, aucune modification n'est effectuée. La fonction utilise
  * le générateur de nombres aléatoires de la bibliothèque standard.
  *
- * @param data7 Le tableau d'entiers représentant les données à modifier.
+ * @param data Le tableau d'entiers représentant les données à modifier.
  */
-void errorServeur(int *data7) {
+void errorServeur(int *data) {
     srand(time(NULL)); // Initialisation du générateur de nombres aléatoires
 
     int i;
@@ -361,11 +361,10 @@ void errorServeur(int *data7) {
     for (i = 0; i < 7; i++) {
         if (comp == 100) {
             int j = rand() % 3;
-            printf("%d \n", j);
-            if (data7[i] == 1 && j == 1) {
-                data7[i] = 0;
+            if (data[i] == 1 && j == 1) {
+                data[i] = 0;
             } else if (j == 1) {
-                data7[i] = 1;
+                data[i] = 1;
             }
             comp = -1;
         }
@@ -380,60 +379,48 @@ void errorServeur(int *data7) {
  * calcule les bits de parité et construit le mot de sortie en utilisant le
  * codage de Hamming (7,4).
  *
- * @param data4 Les données à coder.
- * @param encoded7 Le tableau pour stocker les données codées.
+ * @param data Les données à coder sur 4 bits
+ * @param hamming Le tableau pour stocker les données codées.
  */
-void encodeHamming(const int *data4, int *encoded7) {
-    // Calcul des bits de parité
-    encoded7[2] = data4[0] ^ data4[1] ^ data4[3]; // P1
-    encoded7[4] = data4[0] ^ data4[2] ^ data4[3]; // P2
-    encoded7[5] = data4[1] ^ data4[2] ^ data4[3]; // P3
+void encodeHamming(int *data, int *hamming) {
+    // Initialisation
+    for (int i = 0; i < 7; i++) {
+        hamming[i] = 0;
+    }
 
-    // Construction du mot de sortie
-    encoded7[0] = data4[0];
-    encoded7[1] = data4[1];
-    encoded7[3] = data4[2];
-    encoded7[6] = data4[3];
+    // Bits de données
+    hamming[2] = data[0];
+    hamming[4] = data[1];
+    hamming[5] = data[2];
+    hamming[6] = data[3];
+
+    // Bits de parité
+    hamming[0] = hamming[2] ^ hamming[4] ^ hamming[6];
+    hamming[1] = hamming[2] ^ hamming[5] ^ hamming[6];
+    hamming[3] = hamming[4] ^ hamming[5] ^ hamming[6];
 }
 
-/**
- * @brief Fonction pour effectuer le décodage de Hamming (7,4).
- * La fonction prend en paramètre un tableau d'entiers représentant les données
- * codées, et un tableau d'entiers pour stocker les données décodées. La
- * fonction calcule les bits de parité, détecte et corrige les erreurs
- * éventuelles, et construit les données décodées en utilisant le décodage de
- * Hamming (7,4).
- *
- * @param encoded7 Les données codées.
- * @param decoded4 Le tableau pour stocker les données décodées.
- */
-void decodageHamming(const int *encoded7, int *decoded4) {
-    // Copie des données codées dans un autre tableau
-    int decoded7[7];
-    for (int i = 0; i < 7; ++i) {
-        decoded7[i] = encoded7[i];
+void decodeHamming(int *hamming, int *data) {
+    int syndrome = 0;
+
+    // Calculer le syndrome
+    syndrome += hamming[0] ^ hamming[2] ^ hamming[4] ^ hamming[6];
+    syndrome += hamming[1] ^ hamming[2] ^ hamming[5] ^ hamming[6];
+    syndrome += hamming[3] ^ hamming[4] ^ hamming[5] ^ hamming[6];
+
+    // Si le syndrome est non nul, corriger l'erreur
+    if (syndrome != 0) {
+        int position = (hamming[2] << 2) | (hamming[4] << 1) | hamming[5];
+        position--; // Convertir en index 0-based
+
+        hamming[position] = hamming[position] ^ 1; // Corriger l'erreur
     }
 
-    // Calcul des bits de parité
-    int p1 = decoded7[2];
-    int p2 = decoded7[4];
-    int p3 = decoded7[5];
-
-    // Calcul de la position de l'erreur
-    int erreur = p1 * 1 + p2 * 2 + p3 * 4;
-
-    // Correction de l'erreur (si présente)
-    if (erreur != 0) {
-        printf("Erreur détectée à la position : %d\n", erreur);
-        // Inversion du bit erroné
-        decoded7[erreur - 1] = !decoded7[erreur - 1];
-    }
-
-    // Construction des données décodées
-    decoded4[0] = decoded7[0];
-    decoded4[1] = decoded7[1];
-    decoded4[2] = decoded7[3];
-    decoded4[3] = decoded7[6];
+    // Extraire les bits de données
+    data[0] = hamming[2];
+    data[1] = hamming[4];
+    data[2] = hamming[5];
+    data[3] = hamming[6];
 }
 
 /*===================================================
@@ -441,62 +428,42 @@ FONCTIONS UTILISES & DIVERSES
 ===================================================*/
 
 /**
- * Récupère les éléments d'un tableau entre les indices spécifiés.
+ * @brief Convertit un caractère en binaire.
  *
- * @param tab Le tableau source.
- * @param start L'indice de début (inclus).
- * @param end L'indice de fin (inclus).
- * @param tailleResultat Un pointeur vers une variable pour stocker la taille du
- * sous-tableau résultant.
- * @return Un pointeur vers le sous-tableau contenant les éléments spécifiés.
+ * @param c Le caractère à convertir.
+ * @return Un pointeur vers un tableau contenant la représentation binaire
+ * du caractère.
  */
-int *getElements(int *tab, int start, int end, int *tailleResultat) {
-    if (tab == NULL) {
-        fprintf(stderr, "Le tableau source est NULL.\n");
-        exit(EXIT_FAILURE);
+void charToBinaire(int *bin, char c) {
+    for (int i = 7; i >= 0; --i) {
+        bin[i] = (c >> i) & 1;
     }
+}
 
-    if (start < 0 || end < start) {
-        fprintf(stderr, "Indices invalides : start = %d, end = %d.\n", start,
-                end);
-        exit(EXIT_FAILURE);
+/**
+ * @brief Convertit un entier en sa représentation binaire.
+ *
+ * @param num L'entier à convertir.
+ * @return Un pointeur vers la représentation binaire de l'entier.
+ */
+void intToBinaire(int *bin, int num) {
+    for (int i = 7; i >= 0; --i) {
+        bin[i] = (num >> i) & 1;
     }
+}
 
-    int taille = end - start + 1;
-    int *sub_tab = malloc(taille * sizeof(int));
-    if (sub_tab == NULL) {
-        fprintf(stderr, "Erreur d'allocation mémoire\n");
-        exit(EXIT_FAILURE);
+char binToChar(int *bin) {
+    int valeur = 0;
+    for (int i = 0; i < 8; i++) {
+        valeur = (valeur << 1) | bin[i];
     }
+    return (char)valeur;
+}
 
-    for (int i = start; i <= end; i++) {
-        sub_tab[i - start] = tab[i];
+unsigned int binToEntier(int *bin) {
+    unsigned int valeur = 0;
+    for (int i = 0; i < 8; i++) {
+        valeur = (valeur << 1) | bin[i];
     }
-
-    *tailleResultat = taille;
-    return sub_tab;
-
-    /**
-     * @brief Convertit un entier en sa représentation binaire.
-     *
-     * @param num L'entier à convertir.
-     * @return Un pointeur vers la représentation binaire de l'entier.
-     */
-    void intToBinaire(int *binary, int num) {
-        for (int i = 7; i >= 0; --i) {
-            binary[i] = (num >> i) & 1;
-        }
-    }
-
-    /**
-     * Convertit un caractère en binaire.
-     *
-     * @param c Le caractère à convertir.
-     * @return Un pointeur vers un tableau contenant la représentation binaire
-     * du caractère.
-     */
-    void charToBinaire(int *binary, char c) {
-        for (int i = 7; i >= 0; --i) {
-            binary[i] = (c >> i) & 1;
-        }
-    }
+    return valeur;
+}
