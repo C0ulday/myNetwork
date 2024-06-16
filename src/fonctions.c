@@ -210,6 +210,12 @@ FONCTIONS CLIENT
 ===================================================*/
 
 /*COMPRESSION  LZ78*/
+/**
+ * @brief Initialise le dictionnaire avec une taille donnée.
+ *
+ * @param dico Le pointeur vers le dictionnaire à initialiser.
+ * @param taille La taille du dictionnaire.
+ */
 void initialiserDico(Dico *dico, int taille) {
 
     dico->cellule = malloc(taille * sizeof(Cellule));
@@ -221,6 +227,18 @@ void initialiserDico(Dico *dico, int taille) {
     dico->cellule[0].index = -1;
 }
 
+/**
+ * @brief Ajoute un mot au dictionnaire.
+ *
+ * Cette fonction ajoute un mot au dictionnaire en assignant l'index et le mot
+ * donnés à la prochaine cellule disponible dans le dictionnaire. Si le
+ * dictionnaire est déjà plein, elle affiche un message indiquant que le
+ * dictionnaire est plein.
+ *
+ * @param dico Pointeur vers la structure du dictionnaire.
+ * @param index L'index du mot.
+ * @param mot Le mot à ajouter.
+ */
 void ajouterDansDico(Dico *dico, int index, char *mot) {
 
     if (dico->nbCellules < MAX_MOTS_DICO) {
@@ -233,6 +251,13 @@ void ajouterDansDico(Dico *dico, int index, char *mot) {
     dico->cellule[dico->nbCellules].index = -1; // marque la fin du mot
 }
 
+/**
+ * Vérifie si un élément est présent dans le dictionnaire.
+ *
+ * @param dico Le dictionnaire à vérifier.
+ * @param element L'élément à rechercher dans le dictionnaire.
+ * @return 1 si l'élément est présent dans le dictionnaire, 0 sinon.
+ */
 int DansDico(Dico *dico, char *element) {
 
     int i = 0;
@@ -245,6 +270,13 @@ int DansDico(Dico *dico, char *element) {
     return 0;
 }
 
+/**
+ * Recherche l'index d'un mot donné dans le dictionnaire.
+ *
+ * @param dico Le dictionnaire dans lequel effectuer la recherche.
+ * @param mot Le mot à rechercher.
+ * @return L'index du mot dans le dictionnaire, ou 0 s'il n'est pas trouvé.
+ */
 int rechercheIndexDansDico(Dico *dico, char *mot) {
 
     for (int i = 0; i < dico->nbCellules; i++) {
@@ -255,9 +287,17 @@ int rechercheIndexDansDico(Dico *dico, char *mot) {
     return 0;
 }
 
-/*Dans un dico, il faut tenir compte du dernier élément pour marquer la fin :
-si j'ai 3 cellules, j'en initialise 4 pour le token de fin
+/*Dans un dico, il faut tenir compte du dernier élément pour marquer la fin
+: si j'ai 3 cellules, j'en initialise 4 pour le token de fin
 */
+/**
+ * Fonction qui implémente l'algorithme LZ78 pour compresser un message.
+ *
+ * @param message Le message à compresser.
+ * @return Un pointeur vers une structure Output contenant le dictionnaire
+ * et les blocs compressés.
+ */
+
 Output *LZ78(char *message) {
 
     Dico *dico = malloc(sizeof(Dico));
@@ -310,8 +350,8 @@ Output *LZ78(char *message) {
             ajouterDansDico(dico, ++nbCellules, temp);
         }
 
-        /*Si la chaîne est déjà dans le dico, j'avance d'un caractère jusqu'à
-        obtenir un mot qui n'est pas encore dans le dico*/
+        /*Si la chaîne est déjà dans le dico, j'avance d'un caractère
+        jusqu'à obtenir un mot qui n'est pas encore dans le dico*/
 
         else {
             // On s'assure d'incrémenter i seulement si on ne dépasse pas la
@@ -344,12 +384,13 @@ Output *LZ78(char *message) {
 
 /**
  * @brief Fonction pour générer une erreur aléatoire dans les données.
- * La fonction prend en paramètre un tableau d'entiers représentant les données
- * à modifier. Elle génère un nombre aléatoire entre 0 et 2 inclus, et modifie
- * une des valeurs du tableau en fonction de ce nombre. Si le nombre généré est
- * 1, la valeur correspondante dans le tableau est inversée. Si le nombre généré
- * est différent de 1, aucune modification n'est effectuée. La fonction utilise
- * le générateur de nombres aléatoires de la bibliothèque standard.
+ * La fonction prend en paramètre un tableau d'entiers représentant les
+ * données à modifier. Elle génère un nombre aléatoire entre 0 et 2 inclus,
+ * et modifie une des valeurs du tableau en fonction de ce nombre. Si le
+ * nombre généré est 1, la valeur correspondante dans le tableau est
+ * inversée. Si le nombre généré est différent de 1, aucune modification
+ * n'est effectuée. La fonction utilise le générateur de nombres aléatoires
+ * de la bibliothèque standard.
  *
  * @param data Le tableau d'entiers représentant les données à modifier.
  */
@@ -374,46 +415,71 @@ void errorServeur(int *data) {
 
 /**
  * @brief Fonction pour effectuer le codage de Hamming (7,4).
- * La fonction prend en paramètre un tableau d'entiers représentant les données
- * à coder, et un tableau d'entiers pour stocker les données codées. La fonction
- * calcule les bits de parité et construit le mot de sortie en utilisant le
- * codage de Hamming (7,4).
+ * La fonction prend en paramètre un tableau d'entiers représentant les
+ * données à coder, et un tableau d'entiers pour stocker les données codées.
+ * La fonction calcule les bits de parité et construit le mot de sortie en
+ * utilisant le codage de Hamming (7,4).
  *
  * @param data Les données à coder sur 4 bits
  * @param hamming Le tableau pour stocker les données codées.
  */
-void encodeHamming(int *data, int *hamming) {
+void encodeHamming8to12(int *data, int *hamming) {
     // Initialisation
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 12; i++) {
         hamming[i] = 0;
     }
 
     // Bits de données
-    hamming[2] = data[0];
-    hamming[4] = data[1];
-    hamming[5] = data[2];
-    hamming[6] = data[3];
+    hamming[2] = data[0];  // D1
+    hamming[4] = data[1];  // D2
+    hamming[5] = data[2];  // D3
+    hamming[6] = data[3];  // D4
+    hamming[8] = data[4];  // D5
+    hamming[9] = data[5];  // D6
+    hamming[10] = data[6]; // D7
+    hamming[11] = data[7]; // D8
 
     // Bits de parité
-    hamming[0] = hamming[2] ^ hamming[4] ^ hamming[6];
-    hamming[1] = hamming[2] ^ hamming[5] ^ hamming[6];
-    hamming[3] = hamming[4] ^ hamming[5] ^ hamming[6];
+    hamming[0] =
+        hamming[2] ^ hamming[4] ^ hamming[6] ^ hamming[8] ^ hamming[10];
+    hamming[1] =
+        hamming[2] ^ hamming[5] ^ hamming[6] ^ hamming[9] ^ hamming[10];
+    hamming[3] = hamming[4] ^ hamming[5] ^ hamming[6] ^ hamming[11];
+    hamming[7] = hamming[8] ^ hamming[9] ^ hamming[10] ^ hamming[11];
 }
 
-void decodeHamming(int *hamming, int *data) {
-    int syndrome = 0;
+/**
+ * @brief Décode un code de Hamming (12, 8) et corrige les erreurs si elles
+ * sont détectées.
+ *
+ * Cette fonction prend un tableau de bits de code de Hamming et le décode
+ * pour extraire les 8 bits de données d'origine. Elle vérifie également les
+ * erreurs dans le code et les corrige si elles sont détectées.
+ *
+ * @param hamming Le tableau de bits de code de Hamming (12 bits).
+ * @param data Le tableau pour stocker les 8 bits de données décodées.
+ */
+void decodeHamming12to8(int *hamming, int *data) {
+    int errorPosition = 0;
 
-    // Calculer le syndrome
-    syndrome += hamming[0] ^ hamming[2] ^ hamming[4] ^ hamming[6];
-    syndrome += hamming[1] ^ hamming[2] ^ hamming[5] ^ hamming[6];
-    syndrome += hamming[3] ^ hamming[4] ^ hamming[5] ^ hamming[6];
+    // Calculer les bits de parité
+    int p1 = hamming[0] ^ hamming[2] ^ hamming[4] ^ hamming[6] ^ hamming[8] ^
+             hamming[10];
+    int p2 = hamming[1] ^ hamming[2] ^ hamming[5] ^ hamming[6] ^ hamming[9] ^
+             hamming[10];
+    int p4 = hamming[3] ^ hamming[4] ^ hamming[5] ^ hamming[6] ^ hamming[11];
+    int p8 = hamming[7] ^ hamming[8] ^ hamming[9] ^ hamming[10] ^ hamming[11];
 
-    // Si le syndrome est non nul, corriger l'erreur
-    if (syndrome != 0) {
-        int position = (hamming[2] << 2) | (hamming[4] << 1) | hamming[5];
-        position--; // Convertir en index 0-based
+    // Calculer la position de l'erreur
+    errorPosition = (p8 << 3) | (p4 << 2) | (p2 << 1) | p1;
 
-        hamming[position] = hamming[position] ^ 1; // Corriger l'erreur
+    // Si errorPosition n'est pas 0, il y a une erreur à cette position
+    if (errorPosition != 0) {
+        printf("Error detected at position: %d\n", errorPosition);
+        hamming[errorPosition - 1] ^=
+            1; // Corriger l'erreur en inversant le bit
+    } else {
+        printf("No error detected.\n");
     }
 
     // Extraire les bits de données
@@ -421,6 +487,10 @@ void decodeHamming(int *hamming, int *data) {
     data[1] = hamming[4];
     data[2] = hamming[5];
     data[3] = hamming[6];
+    data[4] = hamming[8];
+    data[5] = hamming[9];
+    data[6] = hamming[10];
+    data[7] = hamming[11];
 }
 
 /*===================================================
@@ -436,7 +506,7 @@ FONCTIONS UTILISES & DIVERSES
  */
 void charToBinaire(int *bin, char c) {
     for (int i = 7; i >= 0; --i) {
-        bin[i] = (c >> i) & 1;
+        bin[7 - i] = (c >> i) & 1;
     }
 }
 
@@ -447,23 +517,74 @@ void charToBinaire(int *bin, char c) {
  * @return Un pointeur vers la représentation binaire de l'entier.
  */
 void intToBinaire(int *bin, int num) {
-    for (int i = 7; i >= 0; --i) {
-        bin[i] = (num >> i) & 1;
+    for (int i = 0; i < 8; ++i) {
+        bin[i] = (num >> (7 - i)) & 1;
     }
 }
 
+/**
+ * Convertit un tableau binaire en un caractère.
+ *
+ * @param bin Le tableau binaire à convertir.
+ * @return Le caractère correspondant à la conversion.
+ */
 char binToChar(int *bin) {
-    int valeur = 0;
-    for (int i = 0; i < 8; i++) {
-        valeur = (valeur << 1) | bin[i];
+    int resultat = 0;
+    for (int i = 0; i < 8; ++i) {
+        resultat = (resultat << 1) | bin[i];
     }
-    return (char)valeur;
+    return (char)resultat;
 }
 
+/**
+ * Convertit un tableau binaire en un entier non signé.
+ *
+ * @param bin Le tableau binaire à convertir.
+ * @return La valeur entière convertie.
+ */
 unsigned int binToEntier(int *bin) {
     unsigned int valeur = 0;
     for (int i = 0; i < 8; i++) {
         valeur = (valeur << 1) | bin[i];
     }
     return valeur;
+}
+
+/**
+ * @brief Récupère un sous-tableau à partir du tableau donné.
+ *
+ * Cette fonction récupère un sous-tableau à partir du tableau donné en
+ * fonction des indices de début et de fin spécifiés. L'indice de début doit
+ * être supérieur ou égal à 0 et inférieur à l'indice de fin.
+ *
+ * @param tableau Le tableau d'origine.
+ * @param debut L'indice de début du sous-tableau.
+ * @param fin L'indice de fin du sous-tableau.
+ * @return Un sous-tableau alloué dynamiquement contenant les éléments du
+ * tableau d'origine. Renvoie NULL si les indices de début et de fin sont
+ * invalides ou si l'allocation de mémoire échoue.
+ */
+int *getSousTableau(int *tableau, int debut, int fin) {
+    // Vérifier les bornes
+    if (debut < 0 || debut >= fin) {
+        printf("Indices de début et fin incorrects.\n");
+        return NULL;
+    }
+
+    // Calculer la taille du sous-tableau
+    int taille = fin - debut + 1;
+
+    // Allouer de la mémoire pour le sous-tableau
+    int *sousTableau = (int *)malloc(taille * sizeof(int));
+    if (sousTableau == NULL) {
+        printf("Erreur d'allocation de mémoire.\n");
+        return NULL;
+    }
+
+    // Copier les éléments du tableau original vers le sous-tableau
+    for (int i = debut; i <= fin; ++i) {
+        sousTableau[i - debut] = tableau[i];
+    }
+
+    return sousTableau;
 }
